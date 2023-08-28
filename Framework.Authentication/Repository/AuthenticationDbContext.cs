@@ -19,6 +19,7 @@ namespace Framework.Authentication.Repository
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
             builder.Entity<IdentityRole>().HasData(identityRoles);
         }
     }
