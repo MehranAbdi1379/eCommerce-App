@@ -28,5 +28,20 @@ namespace eCommerce.API.Controllers
         {
             return Ok(userService.SignUp(dto));
         }
+
+        [Route("sign-in")]
+        [HttpPost]
+        public async Task<IActionResult> SignIn(SignUpDTO dto)
+        {
+            var signInInformation = await userService.SignIn(dto);
+            if (signInInformation!= null)
+            {
+                return Ok(signInInformation);
+            }
+            else
+            {
+                return Unauthorized();
+            }
+        }
     }
 }

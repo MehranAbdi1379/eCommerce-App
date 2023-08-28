@@ -10,6 +10,8 @@ namespace eCommerce.Service.Contracts
 {
     public interface IUserService
     {
-        public IdentityResult SignUp(SignUpDTO dto);
+        public Task<IdentityResult> SignUp(SignUpDTO dto);
+        public Task<SignInInformationDTO> SignIn(SignUpDTO dto);
+
     }
 }
