@@ -1,5 +1,7 @@
 ﻿using eCommerce.Repository.Authentication;
 using eCommerce.Repository.Main.DataBase;
+using eCommerce.Service;
+using eCommerce.Service.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -10,6 +12,11 @@ namespace eCommerce.API.Extensions
 {
     public static class AddServices
     {
+        public static void AddDIForServices(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<IUserService, UserService>();
+        }
+
         public static void AddAuthenticationAndAuthorization(this WebApplicationBuilder builder)
         {
             builder.Services.AddAuthentication();
@@ -21,8 +28,6 @@ namespace eCommerce.API.Extensions
         {
             builder.Services.AddDbContext<eCommerceAuthDbContext>(option
     => option.UseSqlServer(builder.Configuration.GetConnectionString("AuthDBSQLServer")));
-            builder.Services.AddDbContext<eCommerceDBContext>(option 
-                => option.UseSqlServer(builder.Configuration.GetConnectionString("MainDBSQLServer")));
         }
         public static void ConfigureIdentity(this IServiceCollection services)
         {

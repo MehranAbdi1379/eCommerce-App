@@ -19,13 +19,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\eCommerce.Repository.Main\eCommerce.Repository.Main.csproj" />
     <ProjectReference Include="..\eCommerce.Repository\eCommerce.Repository.Authentication.csproj" />
+    <ProjectReference Include="..\eCommerce.Service.Contracts\eCommerce.Service.Contracts.csproj" />
     <ProjectReference Include="..\eCommerce.Service\eCommerce.Service.csproj" />
+    <ProjectReference Include="..\Framework.api\Framework.api.csproj" />
     <ProjectReference Include="..\Framework.Authentication\Framework.Authentication.csproj" />
   </ItemGroup>
 
