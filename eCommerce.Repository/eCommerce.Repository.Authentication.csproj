@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -8,8 +8,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\eCommerce.Domain\eCommerce.Domain.csproj" />
+    <ProjectReference Include="..\Framework.Authentication\Framework.Authentication.csproj" />
     <ProjectReference Include="..\Framework.Core\Framework.Core.csproj" />
-    <ProjectReference Include="..\Framework.Repository\Framework.Repository.csproj" />
   </ItemGroup>
 
 </Project>
