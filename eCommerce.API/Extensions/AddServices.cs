@@ -28,6 +28,8 @@ namespace eCommerce.API.Extensions
         {
             builder.Services.AddDbContext<eCommerceAuthDbContext>(option
     => option.UseSqlServer(builder.Configuration.GetConnectionString("AuthDBSQLServer")));
+            builder.Services.AddDbContext<eCommerceDBContext>(option
+    => option.UseSqlServer(builder.Configuration.GetConnectionString("MainDBSQLServer")));
         }
         public static void ConfigureIdentity(this IServiceCollection services)
         {

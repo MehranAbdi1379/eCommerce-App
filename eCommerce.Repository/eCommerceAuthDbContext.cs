@@ -11,7 +11,7 @@ namespace eCommerce.Repository.Authentication
 {
     public class eCommerceAuthDbContext : AuthenticationDbContext
     {
-        public eCommerceAuthDbContext(DbContextOptions options) : base(options, AuthRoles.IdentityRoles)
+        public eCommerceAuthDbContext(DbContextOptions<eCommerceAuthDbContext> options) : base(options, AuthRoles.IdentityRoles)
         {
         }
     }
