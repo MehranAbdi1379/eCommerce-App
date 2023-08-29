@@ -24,6 +24,17 @@ namespace eCommerce.API.Extensions
             builder.Services.ConfigureJWT(builder.Configuration);
         }
 
+        public static void AddCors(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddCors(options =>
+            {
+                var frontendURL = builder.Configuration.GetValue<string>("frontend_url");
+
+                options.AddDefaultPolicy(builder =>
+                builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader());
+            });
+        }
+
         public static void AddDataBaseContexts(this WebApplicationBuilder builder)
         {
             builder.Services.AddDbContext<eCommerceAuthDbContext>(option
