@@ -24,14 +24,22 @@ namespace eCommerce.API.Controllers
         }
         [Route("sign-up")]
         [HttpPost]
-        public IActionResult SignUp(SignUpDTO dto)
+        public async Task<IActionResult> SignUp(SignUpDTO dto)
         {
-            return Ok(userService.SignUp(dto));
+            try
+            {
+                return Ok(await userService.SignUp(dto));
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            
         }
 
         [Route("sign-in")]
-        [HttpPost]
-        public async Task<IActionResult> SignIn(SignUpDTO dto)
+        [HttpGet]
+        public async Task<IActionResult> SignIn([FromQuery] SignUpDTO dto)
         {
             var signInInformation = await userService.SignIn(dto);
             if (signInInformation!= null)
