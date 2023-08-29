@@ -7,3 +7,5 @@ function AuthApiClient() {
     headers: { Authorization: "bearer " + GetAuthToken() },
   });
 }
+
+export default AuthApiClient;
