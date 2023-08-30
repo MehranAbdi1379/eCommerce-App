@@ -1,8 +1,10 @@
 ﻿using eCommerce.Service.Contracts;
 using eCommerce.Service.Contracts.DTO;
 using Framework.Authentication.Service;
+using Framework.Notification;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
+using NETCore.MailKit.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,11 +17,13 @@ namespace eCommerce.Service
     {
         private readonly UserManager<IdentityUser> userManager;
         private readonly AuthManager authManager;
+        private readonly EmailServices emailServices;
 
-        public UserService(UserManager<IdentityUser> userManager , IConfiguration configuration)
+        public UserService(UserManager<IdentityUser> userManager , IConfiguration configuration , IEmailService emailService)
         {
             this.userManager = userManager;
-            this.authManager = new AuthManager(userManager , configuration);
+            authManager = new AuthManager(userManager , configuration);
+            emailServices = new EmailServices(emailService);
         }
 
         public async Task<IdentityResult> SignUp(SignUpDTO dto)
@@ -30,6 +34,21 @@ namespace eCommerce.Service
                 UserName = dto.Email
             };
             var result = await userManager.CreateAsync(user, dto.Password);
+
+            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
+
+            if(result.Succeeded)
+            {
+                await emailServices.SendVerificationEmail(dto.Email , user.Id , token);
+            }
+
+            return result;
+        }
+
+        public async Task<IdentityResult> VerifyEmail(string userId, string token)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            var result = await userManager.ConfirmEmailAsync(user, token);
 
             return result;
         }

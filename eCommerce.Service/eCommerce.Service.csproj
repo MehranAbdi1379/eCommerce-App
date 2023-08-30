@@ -11,6 +11,7 @@
     <ProjectReference Include="..\eCommerce.Repository.Main\eCommerce.Repository.Main.csproj" />
     <ProjectReference Include="..\eCommerce.Repository\eCommerce.Repository.Authentication.csproj" />
     <ProjectReference Include="..\eCommerce.Service.Contracts\eCommerce.Service.Contracts.csproj" />
+    <ProjectReference Include="..\Framework.Notification\Framework.Notification.csproj" />
   </ItemGroup>
 
 </Project>
