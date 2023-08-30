@@ -8,19 +8,22 @@ import {
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Form } from "react-router-dom";
+import { Form, useNavigate } from "react-router-dom";
 import UserService from "../../services/UserService";
 
 const SignUpPage = () => {
   const { handleSubmit, register } = useForm();
   const { SignUp } = new UserService();
+  const navigate = useNavigate();
   return (
     <Container border={"2px solid gray"} borderRadius={"10px"} padding={"35px"}>
       <Heading fontSize={"2rem"} marginBottom={"0.8em"}>
         Sing Up
       </Heading>
       <Form
-        onSubmit={handleSubmit((data) => SignUp(data.email, data.password))}
+        onSubmit={handleSubmit((data) =>
+          SignUp(data.email, data.password, navigate)
+        )}
       >
         <FormControl marginBottom={"1.3em"}>
           <Input {...register("email")} placeholder="Email"></Input>
