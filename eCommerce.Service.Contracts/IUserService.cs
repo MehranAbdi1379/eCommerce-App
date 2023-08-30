@@ -12,6 +12,7 @@ namespace eCommerce.Service.Contracts
     {
         public Task<IdentityResult> SignUp(SignUpDTO dto);
         public Task<SignInInformationDTO> SignIn(SignUpDTO dto);
+        public Task<IdentityResult> VerifyEmail(string userId, string token);
 
     }
 }

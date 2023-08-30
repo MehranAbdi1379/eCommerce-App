@@ -71,7 +71,7 @@ public class AuthManager
     {
         user = await userManager.FindByEmailAsync(userForAuth.Email);
         var result = user != null && await userManager.CheckPasswordAsync(user,
-       userForAuth.Password);
+       userForAuth.Password) && await userManager.IsEmailConfirmedAsync(user);
         return result;
     }
 
