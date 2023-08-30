@@ -43,15 +43,15 @@ namespace eCommerce.API.Controllers
         [HttpGet]
         public async Task<IActionResult> SendEmail()
         {
-            emailService.Send("Papercut@user.com", "Verify", "This is going to be the best");
+            emailService.Send("Papercut@user.com", "Verify", "Please verify your email");
             return Ok();
         }
 
         [Route("verify-email")]
-        [HttpPost]
-        public async Task<IActionResult> VerifyEmail(string userId, string token)
+        [HttpPut]
+        public async Task<IActionResult> VerifyEmail(EmailVerificationDTO dto)
         {
-            var result = await userService.VerifyEmail(userId, token);
+            var result = await userService.VerifyEmail(dto.UserId, dto.Token);
             if (result.Succeeded)
                 return Ok();
             return Unauthorized();

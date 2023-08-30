@@ -32,10 +32,13 @@ namespace eCommerce.API.Extensions
         {
             builder.Services.AddCors(options =>
             {
-                var frontendURL = builder.Configuration.GetValue<string>("frontend_url");
+                var frontendURL1 = builder.Configuration.GetValue<string>("frontend_url1");
+                var frontendURL2 = builder.Configuration.GetValue<string>("frontend_url2");
 
                 options.AddDefaultPolicy(builder =>
-                builder.WithOrigins(frontendURL).AllowAnyMethod().AllowAnyHeader());
+                builder.WithOrigins(frontendURL1).AllowAnyMethod().AllowAnyHeader());
+                options.AddDefaultPolicy(builder =>
+                builder.WithOrigins(frontendURL2).AllowAnyMethod().AllowAnyHeader());
             });
         }
 
