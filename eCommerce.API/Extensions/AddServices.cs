@@ -5,7 +5,11 @@ using eCommerce.Service.Contracts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure;
+using NETCore.MailKit.Infrastructure.Internal;
 using System.Text;
 
 namespace eCommerce.API.Extensions
@@ -44,17 +48,27 @@ namespace eCommerce.API.Extensions
         }
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            var builder = services.AddIdentity<IdentityUser, IdentityRole>(o =>
+            services.AddIdentity<IdentityUser, IdentityRole>(o =>
             {
                 o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = false;
                 o.Password.RequireUppercase = false;
                 o.Password.RequireNonAlphanumeric = false;
                 o.Password.RequiredLength = 6;
-                o.User.RequireUniqueEmail = false;
+                o.User.RequireUniqueEmail = true;
+                o.SignIn.RequireConfirmedEmail = true;
             })
             .AddEntityFrameworkStores<eCommerceAuthDbContext>()
             .AddDefaultTokenProviders();
+        }
+
+        public static void AddEmailService(this WebApplicationBuilder builder)
+        {
+            var mailKitOptions = builder.Configuration.GetSection("Email").Get<MailKitOptions>();
+            builder.Services.AddMailKit(config =>
+            {
+                config.UseMailKit(mailKitOptions);
+            });
         }
 
         public static void ConfigureJWT(this IServiceCollection service, IConfiguration configuration)
