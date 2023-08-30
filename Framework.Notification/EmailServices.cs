@@ -17,7 +17,7 @@ namespace Framework.Notification
         }
         public async Task SendVerificationEmail(string email ,string userId, string token)
         {
-            await emailServvice.SendAsync(email, "eCommerce Verification Link", $"<a href=\"https://localhost:7209/api/user/verify-email?userId={userId}&token={token}\">Verify Email<a/>", true);
+            await emailServvice.SendAsync(email, "eCommerce Verification Link", $"<a href=\"http://localhost:5173/email-verified?userId={userId}&token={token}\">Verify Email<a/>", true);
         }
     }
 }
