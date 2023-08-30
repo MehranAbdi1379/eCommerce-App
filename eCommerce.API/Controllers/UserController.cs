@@ -5,6 +5,7 @@ using Framework.Authentication.Service;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NETCore.MailKit.Core;
 
 namespace eCommerce.API.Controllers
 {
@@ -15,12 +16,14 @@ namespace eCommerce.API.Controllers
         private readonly IUserService userService;
         private readonly UserManager<IdentityUser> userManager;
         private readonly AuthManager authManager;
+        private readonly IEmailService emailService;
 
-        public UserController(IUserService userService, UserManager<IdentityUser> userManager , IConfiguration configuration)
+        public UserController(IUserService userService, UserManager<IdentityUser> userManager , IConfiguration configuration , IEmailService emailService)
         {
             this.userService = userService;
             this.userManager = userManager;
             this.authManager = new AuthManager(userManager , configuration);
+            this.emailService = emailService;
         }
         [Route("sign-up")]
         [HttpPost]
@@ -34,7 +37,24 @@ namespace eCommerce.API.Controllers
             {
                 return BadRequest(ex);
             }
-            
+        }
+
+        [Route("send-email")]
+        [HttpGet]
+        public async Task<IActionResult> SendEmail()
+        {
+            emailService.Send("Papercut@user.com", "Verify", "This is going to be the best");
+            return Ok();
+        }
+
+        [Route("verify-email")]
+        [HttpPost]
+        public async Task<IActionResult> VerifyEmail(string userId, string token)
+        {
+            var result = await userService.VerifyEmail(userId, token);
+            if (result.Succeeded)
+                return Ok();
+            return Unauthorized();
         }
 
         [Route("sign-in")]
