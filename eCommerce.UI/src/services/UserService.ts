@@ -9,7 +9,7 @@ class UserService {
       .catch((err) => console.log(err));
   }
   VerifyEmail(userId: any, token: any) {
-    console.log({ userId, token });
+    if (token) token = token.split(" ").join("+");
     apiClient
       .put("user/verify-email", { userId, token })
       .then((res) => console.log(res))

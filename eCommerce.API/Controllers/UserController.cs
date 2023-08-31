@@ -39,14 +39,6 @@ namespace eCommerce.API.Controllers
             }
         }
 
-        [Route("send-email")]
-        [HttpGet]
-        public async Task<IActionResult> SendEmail()
-        {
-            emailService.Send("Papercut@user.com", "Verify", "Please verify your email");
-            return Ok();
-        }
-
         [Route("verify-email")]
         [HttpPut]
         public async Task<IActionResult> VerifyEmail(EmailVerificationDTO dto)

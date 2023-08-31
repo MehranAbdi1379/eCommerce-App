@@ -45,6 +45,7 @@ namespace eCommerce.Service
             return result;
         }
 
+
         public async Task<IdentityResult> VerifyEmail(string userId, string token)
         {
             var user = await userManager.FindByIdAsync(userId);
