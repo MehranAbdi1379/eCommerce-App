@@ -5,10 +5,11 @@ import {
   Input,
   Button,
   Heading,
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Form } from "react-router-dom";
+import { Form, Link } from "react-router-dom";
 import UserService from "../../services/UserService";
 
 const SignInPage = () => {
@@ -34,6 +35,7 @@ const SignInPage = () => {
           <Button type="submit">Log In</Button>
         </FormControl>
       </Form>
+      <Link to={"/password-reset"}></Link>
     </Container>
   );
 };

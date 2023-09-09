@@ -8,13 +8,7 @@ class UserService {
       .then(() => navigate("/email-verification-sent"))
       .catch((err) => console.log(err));
   }
-  VerifyEmail(userId: any, token: any) {
-    if (token) token = token.split(" ").join("+");
-    apiClient
-      .put("user/verify-email", { userId, token })
-      .then((res) => console.log(res))
-      .catch((err) => console.log("not verified"));
-  }
+
   SignIn(email: string, password: string) {
     apiClient
       .get("user/sign-in", { params: { email, password } })
