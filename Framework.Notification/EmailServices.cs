@@ -9,15 +9,19 @@ namespace Framework.Notification
 {
     public class EmailServices
     {
-        private IEmailService emailServvice;
+        private IEmailService emailService;
 
         public EmailServices(IEmailService emailService)
         {
-            this.emailServvice = emailService;
+            this.emailService = emailService;
         }
         public async Task SendVerificationEmail(string email ,string userId, string token)
         {
-            await emailServvice.SendAsync(email, "eCommerce Verification Link", $"<a href=\"http://localhost:5173/email-verified?userId={userId}&token={token}\">Verify Email<a/>", true);
+            await emailService.SendAsync(email, "eCommerce Verification Link", $"<a href=\"http://localhost:5173/email-verified?userId={userId}&token={token}\">Verify Email<a/>", true);
+        }
+        public async Task SendPasswordResetEmail(string email, string userId , string token)
+        {
+            await emailService.SendAsync(email, "eCommerce Password Reset Link", $"<a href=\"http://localhost:5173/password-reset?userId={userId}&token={token}\">Reset Password<a/>" , true);
         }
     }
 }
