@@ -39,16 +39,6 @@ namespace eCommerce.API.Controllers
             }
         }
 
-        [Route("verify-email")]
-        [HttpPut]
-        public async Task<IActionResult> VerifyEmail(EmailVerificationDTO dto)
-        {
-            var result = await userService.VerifyEmail(dto.UserId, dto.Token);
-            if (result.Succeeded)
-                return Ok();
-            return Unauthorized();
-        }
-
         [Route("sign-in")]
         [HttpGet]
         public async Task<IActionResult> SignIn([FromQuery] SignUpDTO dto)

@@ -44,19 +44,9 @@ namespace eCommerce.Service
 
             return result;
         }
-
-
-        public async Task<IdentityResult> VerifyEmail(string userId, string token)
-        {
-            var user = await userManager.FindByIdAsync(userId);
-            var result = await userManager.ConfirmEmailAsync(user, token);
-
-            return result;
-        }
-
         public async Task<SignInInformationDTO> SignIn(SignUpDTO dto)
         {
-            if (await authManager.ValidateUser(new UserSignInDTO{ Email=dto.Email , Password = dto.Password}))
+            if (await authManager.ValidateUser(new UserSignInDTO { Email = dto.Email, Password = dto.Password }))
             {
                 return new SignInInformationDTO
                 {
@@ -65,6 +55,28 @@ namespace eCommerce.Service
                 };
             }
             return null;
+        }
+        public async Task<IdentityResult> VerifyEmail(string userId, string token)
+        {
+            var user = await userManager.FindByIdAsync(userId);
+            var result = await userManager.ConfirmEmailAsync(user, token);
+
+            return result;
+        }
+        public async void SendPasswordResetEmail(string email)
+        {
+            var user = await userManager.FindByEmailAsync(email);
+
+            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+
+            await emailServices.SendPasswordResetEmail(email, user.Id, token);
+        }
+        public async Task<IdentityResult> ChangePassword(ResetPasswordDTO dto)
+        {
+            var user = await userManager.FindByEmailAsync(dto.Email);
+            var result = await userManager.ResetPasswordAsync(user, dto.Token, dto.newPassword);
+
+            return result;
         }
     }
 }
