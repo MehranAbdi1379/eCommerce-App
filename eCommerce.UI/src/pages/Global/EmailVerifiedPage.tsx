@@ -1,10 +1,10 @@
 import React, { useEffect } from "react";
 import { useSearchParams } from "react-router-dom";
-import UserService from "../../services/UserService";
+import EmailService from "../../services/EmailService";
 
 const EmailVerifiedPage = () => {
   const [queryParams] = useSearchParams();
-  const { VerifyEmail } = new UserService();
+  const { VerifyEmail } = new EmailService();
   useEffect(() => {
     VerifyEmail(queryParams.get("userId"), queryParams.get("token"));
   }, []);

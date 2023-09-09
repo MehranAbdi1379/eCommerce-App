@@ -24,6 +24,7 @@ function App() {
             element={<EmailVerificationSentPage />}
           ></Route>
           <Route path="email-verified" element={<EmailVerifiedPage />}></Route>
+          <Route path="password-reset" element></Route>
         </Route>
       </Route>
     )
