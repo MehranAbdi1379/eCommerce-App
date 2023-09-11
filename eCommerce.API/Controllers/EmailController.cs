@@ -30,9 +30,9 @@ namespace eCommerce.API.Controllers
 
         [Route("send-reset-password-email")]
         [HttpGet]
-        public void SendPasswordResetEmail([FromQuery] string email)
+        public Task SendPasswordResetEmail([FromQuery] string email)
         {
-            userService.SendPasswordResetEmail(email);
+            return userService.SendPasswordResetEmail(email);
         }
 
         [Route("reset-password")]
