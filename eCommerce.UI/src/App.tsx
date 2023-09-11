@@ -6,10 +6,11 @@ import {
 } from "react-router-dom";
 import RootLayout from "./layouts/RootLayout";
 import MainPage from "./pages/Global/MainPage";
-import SignUpPage from "./pages/Global/SignUpPage";
-import SignInPage from "./pages/Global/SignInPage";
 import EmailVerificationSentPage from "./pages/Global/EmailVerificationSentPage";
 import EmailVerifiedPage from "./pages/Global/EmailVerifiedPage";
+import SignUpLogInPage from "./pages/Global/SignUpLogInPage";
+import PasswordResetRequestPage from "./pages/Global/PasswordResetRequestPage";
+import PasswordResetPage from "./pages/Global/PasswordResetPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -17,14 +18,17 @@ function App() {
       <Route>
         <Route element={<RootLayout />}>
           <Route index element={<MainPage />}></Route>
-          <Route path="sign-up" element={<SignUpPage />}></Route>
-          <Route path="sign-in" element={<SignInPage />}></Route>
+          <Route path="sign" element={<SignUpLogInPage />}></Route>
           <Route
             path="email-verification-sent"
             element={<EmailVerificationSentPage />}
           ></Route>
           <Route path="email-verified" element={<EmailVerifiedPage />}></Route>
-          <Route path="password-reset" element></Route>
+          <Route
+            path="password-reset-request"
+            element={<PasswordResetRequestPage />}
+          ></Route>
+          <Route path="password-reset" element={<PasswordResetPage />}></Route>
         </Route>
       </Route>
     )

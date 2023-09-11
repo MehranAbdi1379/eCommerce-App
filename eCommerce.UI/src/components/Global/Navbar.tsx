@@ -1,9 +1,23 @@
-import { Button, Flex, Heading } from "@chakra-ui/react";
+import { PhoneIcon, SearchIcon } from "@chakra-ui/icons";
+import {
+  Button,
+  Flex,
+  Heading,
+  Input,
+  InputGroup,
+  InputLeftElement,
+  InputRightElement,
+  Menu,
+  MenuButton,
+  MenuItem,
+  MenuList,
+} from "@chakra-ui/react";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
   return (
     <Flex
       padding={"2vh 10vw"}
@@ -11,12 +25,43 @@ const Navbar = () => {
       justifyContent={"space-between"}
       bg={"red.300"}
     >
-      <Heading cursor={"pointer"} onClick={() => navigate("/")}>
-        E-Commerce
-      </Heading>
+      <Flex alignItems={"center"}>
+        <Heading
+          minWidth={225}
+          cursor={"pointer"}
+          onClick={() => navigate("/")}
+        >
+          E-Commerce
+        </Heading>
+        <InputGroup marginLeft={4}>
+          <InputLeftElement>
+            <SearchIcon />
+          </InputLeftElement>
+          <Input minWidth={"20vw"} bg={"gray.200"} placeholder="Search"></Input>
+        </InputGroup>
+      </Flex>
+
       <Flex gap={3}>
-        <Button onClick={() => navigate("/sign-in")}>Log In</Button>
-        <Button onClick={() => navigate("/sign-up")}>Sign Up</Button>
+        {token && (
+          <Menu>
+            <MenuButton as={Button}>Logged In</MenuButton>
+            <MenuList>
+              <MenuItem>Your Name</MenuItem>
+              <MenuItem
+                onClick={() => {
+                  navigate("/");
+                  localStorage.removeItem("userId");
+                  localStorage.removeItem("token");
+                }}
+              >
+                Log Out
+              </MenuItem>
+            </MenuList>
+          </Menu>
+        )}
+        {!token && (
+          <Button onClick={() => navigate("/sign")}>Log In | Sign Up</Button>
+        )}
       </Flex>
     </Flex>
   );
