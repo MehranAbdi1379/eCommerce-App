@@ -13,7 +13,7 @@ namespace eCommerce.Service.Contracts
         public Task<IdentityResult> SignUp(SignUpDTO dto);
         public Task<SignInInformationDTO> SignIn(SignUpDTO dto);
         public Task<IdentityResult> VerifyEmail(string userId, string token);
-        public Task SendPasswordResetEmail(string email);
+        public Task<Task> SendPasswordResetEmail(string email);
         public Task<IdentityResult> ChangePassword(ResetPasswordDTO dto);
 
 

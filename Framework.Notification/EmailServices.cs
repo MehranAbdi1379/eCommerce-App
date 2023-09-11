@@ -19,9 +19,9 @@ namespace Framework.Notification
         {
             await emailService.SendAsync(email, "eCommerce Verification Link", $"<a href=\"http://localhost:5173/email-verified?userId={userId}&token={token}\">Verify Email<a/>", true);
         }
-        public async Task SendPasswordResetEmail(string email, string userId , string token)
+        public async Task SendPasswordResetEmail(string email , string token)
         {
-            await emailService.SendAsync(email, "eCommerce Password Reset Link", $"<a href=\"http://localhost:5173/password-reset?userId={userId}&token={token}\">Reset Password<a/>" , true);
+            await emailService.SendAsync(email, "eCommerce Password Reset Link", $"<a href=\"http://localhost:5173/password-reset?email={email}&token={token}\">Reset Password<a/>" , true);
         }
     }
 }

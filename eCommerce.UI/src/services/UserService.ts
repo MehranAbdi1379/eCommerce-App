@@ -9,12 +9,13 @@ class UserService {
       .catch((err) => console.log(err));
   }
 
-  SignIn(email: string, password: string) {
+  SignIn(email: string, password: string, navigate: any) {
     apiClient
       .get("user/sign-in", { params: { email, password } })
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         localStorage.setItem("userId", res.data.userId);
+        navigate("/");
       })
       .catch((err) => console.log(err.data));
   }
