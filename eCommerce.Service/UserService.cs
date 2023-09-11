@@ -1,7 +1,10 @@
 ﻿using eCommerce.Service.Contracts;
 using eCommerce.Service.Contracts.DTO;
+using eCommerce.Service.User.Commands;
+using eCommerce.Service.User.Queries;
 using Framework.Authentication.Service;
 using Framework.Notification;
+using MediatR;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using NETCore.MailKit.Core;
@@ -16,45 +19,23 @@ namespace eCommerce.Service
     public class UserService : IUserService
     {
         private readonly UserManager<IdentityUser> userManager;
-        private readonly AuthManager authManager;
         private readonly EmailServices emailServices;
+        private readonly IMediator mediator;
 
-        public UserService(UserManager<IdentityUser> userManager , IConfiguration configuration , IEmailService emailService)
+        public UserService(UserManager<IdentityUser> userManager , IConfiguration configuration , IEmailService emailService , IMediator mediator)
         {
             this.userManager = userManager;
-            authManager = new AuthManager(userManager , configuration);
             emailServices = new EmailServices(emailService);
+            this.mediator = mediator;
         }
 
         public async Task<IdentityResult> SignUp(SignUpDTO dto)
         {
-            var user = new IdentityUser()
-            {
-                Email = dto.Email,
-                UserName = dto.Email
-            };
-            var result = await userManager.CreateAsync(user, dto.Password);
-
-            var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
-
-            if(result.Succeeded)
-            {
-                await emailServices.SendVerificationEmail(dto.Email , user.Id , token);
-            }
-
-            return result;
+            return await mediator.Send(new SignUserUpCommand(dto));
         }
         public async Task<SignInInformationDTO> SignIn(SignUpDTO dto)
         {
-            if (await authManager.ValidateUser(new UserSignInDTO { Email = dto.Email, Password = dto.Password }))
-            {
-                return new SignInInformationDTO
-                {
-                    Token = await authManager.CreateToken(),
-                    UserId = userManager.FindByEmailAsync(dto.Email).Result.Id
-                };
-            }
-            return null;
+            return await mediator.Send(new SignUserInQuery(dto));
         }
         public async Task<IdentityResult> VerifyEmail(string userId, string token)
         {

@@ -1,11 +1,6 @@
-﻿using eCommerce.Service;
-using eCommerce.Service.Contracts;
+﻿using eCommerce.Service.Contracts;
 using eCommerce.Service.Contracts.DTO;
-using Framework.Authentication.Service;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using NETCore.MailKit.Core;
 
 namespace eCommerce.API.Controllers
 {
@@ -14,16 +9,10 @@ namespace eCommerce.API.Controllers
     public class UserController : ControllerBase
     {
         private readonly IUserService userService;
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly AuthManager authManager;
-        private readonly IEmailService emailService;
 
-        public UserController(IUserService userService, UserManager<IdentityUser> userManager , IConfiguration configuration , IEmailService emailService)
+        public UserController(IUserService userService)
         {
             this.userService = userService;
-            this.userManager = userManager;
-            this.authManager = new AuthManager(userManager , configuration);
-            this.emailService = emailService;
         }
         [Route("sign-up")]
         [HttpPost]

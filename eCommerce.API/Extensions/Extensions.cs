@@ -14,7 +14,7 @@ using System.Text;
 
 namespace eCommerce.API.Extensions
 {
-    public static class AddServices
+    public static class Extensions
     {
         public static void AddDIForServices(this WebApplicationBuilder builder)
         {
