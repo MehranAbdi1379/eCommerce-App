@@ -18,14 +18,10 @@ namespace eCommerce.Service
 {
     public class UserService : IUserService
     {
-        private readonly UserManager<IdentityUser> userManager;
-        private readonly EmailServices emailServices;
         private readonly IMediator mediator;
 
-        public UserService(UserManager<IdentityUser> userManager , IConfiguration configuration , IEmailService emailService , IMediator mediator)
+        public UserService(IMediator mediator)
         {
-            this.userManager = userManager;
-            emailServices = new EmailServices(emailService);
             this.mediator = mediator;
         }
 
@@ -39,25 +35,15 @@ namespace eCommerce.Service
         }
         public async Task<IdentityResult> VerifyEmail(string userId, string token)
         {
-            var user = await userManager.FindByIdAsync(userId);
-            var result = await userManager.ConfirmEmailAsync(user, token);
-
-            return result;
+            return await mediator.Send(new VerifyUserEmailCommand(userId, token));
         }
-        public async Task SendPasswordResetEmail(string email)
+        public async Task<Task> SendPasswordResetEmail(string email)
         {
-            var user =  userManager.FindByEmailAsync(email).Result;
-
-            var token = userManager.GeneratePasswordResetTokenAsync(user).Result;
-
-            await emailServices.SendPasswordResetEmail(email, token);
+            return await mediator.Send(new SendPasswordResetEmailCommand(email));
         }
         public async Task<IdentityResult> ChangePassword(ResetPasswordDTO dto)
         {
-            var user = await userManager.FindByEmailAsync(dto.Email);
-            var result = await userManager.ResetPasswordAsync(user, dto.Token, dto.newPassword);
-
-            return result;
+            return await mediator.Send(new UpdatePasswordCommand(dto));
         }
     }
 }

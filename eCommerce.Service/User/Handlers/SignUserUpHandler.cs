@@ -29,10 +29,13 @@ public class SignUserUpHandler : IRequestHandler<SignUserUpCommand, IdentityResu
         };
         var result = await userManager.CreateAsync(user, request.Dto.Password);
 
+        await userManager.AddToRoleAsync(user, "customer");
+
         var token = await userManager.GenerateEmailConfirmationTokenAsync(user);
 
         if (result.Succeeded)
         {
+            
             await emailServices.SendVerificationEmail(request.Dto.Email, user.Id, token);
         }
 
