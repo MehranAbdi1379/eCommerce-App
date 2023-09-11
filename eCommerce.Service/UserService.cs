@@ -63,13 +63,13 @@ namespace eCommerce.Service
 
             return result;
         }
-        public async void SendPasswordResetEmail(string email)
+        public async Task SendPasswordResetEmail(string email)
         {
-            var user = await userManager.FindByEmailAsync(email);
+            var user =  userManager.FindByEmailAsync(email).Result;
 
-            var token = await userManager.GeneratePasswordResetTokenAsync(user);
+            var token = userManager.GeneratePasswordResetTokenAsync(user).Result;
 
-            await emailServices.SendPasswordResetEmail(email, user.Id, token);
+            await emailServices.SendPasswordResetEmail(email, token);
         }
         public async Task<IdentityResult> ChangePassword(ResetPasswordDTO dto)
         {
