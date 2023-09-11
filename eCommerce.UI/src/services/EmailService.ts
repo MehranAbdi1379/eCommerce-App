@@ -8,16 +8,20 @@ class EmailService {
       .then((res) => console.log(res))
       .catch((err) => console.log("not verified"));
   }
-  SendPasswordResetEmail(email: any, setPasswordResetEmailSent: any) {
+  SendResetPasswordEmail(email: any, setPasswordResetEmailSent: any) {
     apiClient
-      .get("email/send-password-reset-email", { params: { email } })
+      .get("email/send-reset-password-email", { params: { email } })
       .then((res) => setPasswordResetEmailSent(true))
       .catch((err) => console.log(err));
   }
-  ResetPassword(email: any, token: any, newPassword: any) {
+  ResetPassword(email: any, token: any, newPassword: any, navigate: any) {
+    if (token) token = token.split(" ").join("+");
     apiClient
-      .put("emai/reset-password", { email, token, newPassword })
-      .then((res) => console.log(res))
+      .put("email/reset-password", { email, token, newPassword })
+      .then((res) => {
+        alert("Password has been reset");
+        navigate("/");
+      })
       .then((err) => console.log(err));
   }
 }

@@ -3,18 +3,17 @@ import {
   Heading,
   FormControl,
   Input,
-  FormLabel,
   Button,
   Text,
 } from "@chakra-ui/react";
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm } from "react-hook-form";
-import { Form, Link } from "react-router-dom";
+import { Form } from "react-router-dom";
 import EmailService from "../../services/EmailService";
 
 const PasswordResetRequestPage = () => {
   const { register, handleSubmit } = useForm();
-  const { SendPasswordResetEmail } = new EmailService();
+  const { SendResetPasswordEmail } = new EmailService();
   const [passwordResetEmailSent, setPasswordResetEmailSent] = useState(false);
   return (
     <Container border={"2px solid gray"} borderRadius={"10px"} padding={"35px"}>
@@ -23,7 +22,7 @@ const PasswordResetRequestPage = () => {
       </Heading>
       <Form
         onSubmit={handleSubmit((data) =>
-          SendPasswordResetEmail(data.email, setPasswordResetEmailSent)
+          SendResetPasswordEmail(data.email, setPasswordResetEmailSent)
         )}
       >
         <FormControl marginBottom={"1.3em"}>
