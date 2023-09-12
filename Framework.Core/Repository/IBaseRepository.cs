@@ -10,5 +10,6 @@ namespace Framework.Repository
         void Update(TEntity entity);
         TEntity GetById(Guid id);  
         bool IsExist(Guid id);
+        public List<TEntity> GetAll();
     }
 }
