@@ -2,6 +2,7 @@
 using eCommerce.Repository.Main.DataBase;
 using eCommerce.Service;
 using eCommerce.Service.Contracts;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -19,6 +20,7 @@ namespace eCommerce.API.Extensions
         public static void AddDIForServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(MediatREntryPointClass).Assembly));
         }
 
         public static void AddAuthenticationAndAuthorization(this WebApplicationBuilder builder)

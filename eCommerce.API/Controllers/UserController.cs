@@ -2,42 +2,41 @@
 using eCommerce.Service.Contracts.DTO;
 using Microsoft.AspNetCore.Mvc;
 
-namespace eCommerce.API.Controllers
+namespace eCommerce.API.Controllers;
+
+[Route("api/user")]
+[ApiController]
+public class UserController : ControllerBase
 {
-    [Route("api/user")]
-    [ApiController]
-    public class UserController : ControllerBase
+    private readonly IUserService userService;
+
+    public UserController(IUserService userService)
     {
-        private readonly IUserService userService;
+        this.userService = userService;
+    }
+    [Route("sign-up")]
+    [HttpPost]
+    public async Task<IActionResult> SignUp(SignUpDTO dto)
+    {
+        var result = await userService.SignUp(dto);
+        if (result.Succeeded)
+            return Ok(result);
+        else
+            return BadRequest(result);
+    }
 
-        public UserController(IUserService userService)
+    [Route("sign-in")]
+    [HttpGet]
+    public async Task<IActionResult> SignIn([FromQuery] SignUpDTO dto)
+    {
+        var signInInformation = await userService.SignIn(dto);
+        if (signInInformation.Token != null)
         {
-            this.userService = userService;
+            return Ok(signInInformation);
         }
-        [Route("sign-up")]
-        [HttpPost]
-        public async Task<IActionResult> SignUp(SignUpDTO dto)
+        else
         {
-            var result = await userService.SignUp(dto);
-            if (result.Succeeded)
-                return Ok(result);
-            else
-                return BadRequest(result);
-        }
-
-        [Route("sign-in")]
-        [HttpGet]
-        public async Task<IActionResult> SignIn([FromQuery] SignUpDTO dto)
-        {
-            var signInInformation = await userService.SignIn(dto);
-            if (signInInformation.Token != null)
-            {
-                return Ok(signInInformation);
-            }
-            else
-            {
-                return Unauthorized();
-            }
+            return Unauthorized();
         }
     }
 }
