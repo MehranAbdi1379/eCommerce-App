@@ -1,4 +1,6 @@
-﻿using Framework.Repository;
+﻿using eCommerce.Domain.Models;
+using eCommerce.Repository.Main.Configurations;
+using Framework.Repository;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -18,6 +20,9 @@ namespace eCommerce.Repository.Main.DataBase
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.ApplyConfiguration(new CategoryConfiguration());
         }
+
+        public DbSet<Category> Categories { get; set; }
     }
 }
