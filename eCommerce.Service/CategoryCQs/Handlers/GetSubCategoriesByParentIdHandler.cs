@@ -20,7 +20,7 @@ namespace eCommerce.Service.CategoryCQs.Handlers
 
         public Task<List<Category>> Handle(GetSubCategoriesByParentIdQuery request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(categoryRespository.GetSubCategoriesByParentId(request.parentId));
+            return Task.FromResult(categoryRespository.GetSubCategoriesByParentId(request.dto.Id));
         }
     }
 }

@@ -25,10 +25,12 @@ namespace eCommerce.Service.User.Handlers
         {
             if (await authManager.ValidateUser(new UserSignInDTO { Email = request.Dto.Email, Password = request.Dto.Password }))
             {
+                var user = await userManager.FindByEmailAsync(request.Dto.Email);
                 return new SignInInformationDTO
                 {
                     Token = await authManager.CreateToken(),
-                    UserId = userManager.FindByEmailAsync(request.Dto.Email).Result.Id
+                    UserId = user.Id,
+                    Role = userManager.GetRolesAsync(user).Result.First()
                 };
             }
             else

@@ -5,7 +5,8 @@ namespace eCommerce.Service
 {
     public interface ICategoryService
     {
-        Task<Category> Create(CategoryCreateDTO dto);
+        Task<Category> CreateRoot(CategoryRootCreateDTO dto);
+        Task<Category> CreateWithParent(CategoryWithParentCreateDTO dto);
         Task<Category> Delete(IdDTO dto);
         Task<List<Category>> GetAll();
         Task<Category> GetById(IdDTO dto);

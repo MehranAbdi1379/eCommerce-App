@@ -6,8 +6,9 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Service.Contracts.DTO
 {
-    public class CategoryRootCreateDTO
+    public class CategoryWithParentCreateDTO
     {
-        public string Title { get; set; } 
+        public string Title { get; set; }
+        public Guid ParentId { get; set; }
     }
 }
