@@ -19,7 +19,8 @@ namespace eCommerce.Service
             this.mediator = mediator;
         }
 
-        public async Task<Category> Create(CategoryCreateDTO dto) => await mediator.Send(new CreateCategoryCommand(dto));
+        public async Task<Category> CreateRoot(CategoryRootCreateDTO dto) => await mediator.Send(new CreateCategoryRootCommand(dto));
+        public async Task<Category> CreateWithParent(CategoryWithParentCreateDTO dto) => await mediator.Send(new CreateCategoryWithParentCommand(dto));
         public async Task<Category> Delete(IdDTO dto) => await mediator.Send(new DeleteCategoryCommand(dto));
         public async Task<List<Category>> GetAll() => await mediator.Send(new GetAllCategoriesQuery());
         public async Task<Category> GetById(IdDTO dto) => await mediator.Send(new GetCategoryByIdQuery(dto));

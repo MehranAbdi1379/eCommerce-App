@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerce.Repository.Main.DataBase;
 
@@ -11,9 +12,11 @@ using eCommerce.Repository.Main.DataBase;
 namespace eCommerce.Repository.Main.Migrations
 {
     [DbContext(typeof(eCommerceDBContext))]
-    partial class eCommerceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230914050223_addCategoryToDB")]
+    partial class addCategoryToDB
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,7 +34,7 @@ namespace eCommerce.Repository.Main.Migrations
                     b.Property<int>("Index")
                         .HasColumnType("int");
 
-                    b.Property<Guid?>("ParentCategoryId")
+                    b.Property<Guid>("ParentCategoryId")
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("Title")
@@ -40,7 +43,7 @@ namespace eCommerce.Repository.Main.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Categories", (string)null);
+                    b.ToTable("Categories");
                 });
 #pragma warning restore 612, 618
         }
