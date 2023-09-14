@@ -11,6 +11,7 @@ import EmailVerifiedPage from "./pages/Global/EmailVerifiedPage";
 import SignUpLogInPage from "./pages/Global/SignUpLogInPage";
 import PasswordResetRequestPage from "./pages/Global/PasswordResetRequestPage";
 import PasswordResetPage from "./pages/Global/PasswordResetPage";
+import AdminSignInPage from "./pages/Admin/AdminSignInPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -30,6 +31,7 @@ function App() {
           ></Route>
           <Route path="password-reset" element={<PasswordResetPage />}></Route>
         </Route>
+        <Route path="admin" element={<AdminSignInPage />}></Route>
       </Route>
     )
   );
