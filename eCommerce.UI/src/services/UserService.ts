@@ -13,9 +13,13 @@ class UserService {
     apiClient
       .get("user/sign-in", { params: { email, password } })
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("userId", res.data.userId);
-        navigate("/");
+        if (res.data.role == "customer") {
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("userId", res.data.userId);
+          navigate("/");
+        } else {
+          alert("Please use admin pannel (/admin)");
+        }
       })
       .catch((err) => console.log(err.data));
   }
