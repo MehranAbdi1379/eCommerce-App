@@ -21,7 +21,7 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 builder.Services.SeedCategoryData();
-builder.Services.SeedUserData();
+await builder.Services.SeedUserData();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

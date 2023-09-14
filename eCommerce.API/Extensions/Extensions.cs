@@ -120,13 +120,13 @@ namespace eCommerce.API.Extensions
                 categorySeedData.SeedData();
         }
 
-        public static void SeedUserData(this IServiceCollection service)
+        public static async Task SeedUserData(this IServiceCollection service)
         {
             using var scope = service.BuildServiceProvider().CreateScope();
             var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
             var userSeedData = new UserSeedData(userManager);
             if (userManager.Users.Count() == 0)
-                userSeedData.SeedData();
+                await userSeedData.SeedData();
         }
     }
 }

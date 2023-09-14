@@ -17,20 +17,39 @@ namespace eCommerce.Repository.Authentication.SeedData
             this.userManager = userManager;
         }
 
-        public void SeedData()
+        public async Task SeedData()
+        {
+            await SeedData_SeedCustomers();
+            await SeedData_SeedAdmin();
+        }
+
+        private async Task SeedData_SeedCustomers()
         {
             var userFaker = new Faker<IdentityUser>()
             .RuleFor(c => c.Email, f => f.Person.Email);
 
-            var faker = new Faker();
-
-            var users = userFaker.Generate(40);
+            var users = userFaker.Generate(20);
 
             foreach (var user in users)
             {
-                userManager.CreateAsync(user, "123456");
-                userManager.AddToRoleAsync(user, "customer");
+                user.UserName = user.Email;
+                user.EmailConfirmed = true;
+                await userManager.CreateAsync(user, "123456");
+                await userManager.AddToRoleAsync(user, "customer");
             }
+        }
+
+        private async Task SeedData_SeedAdmin()
+        {
+            var admin = new IdentityUser()
+            {
+                Email = "mehran@gmail.com"
+            };
+            admin.UserName = admin.Email;
+            admin.EmailConfirmed = true;
+
+            await userManager.CreateAsync(admin, "m123456");
+            await userManager.AddToRoleAsync(admin, "admin");
         }
     }
 }
