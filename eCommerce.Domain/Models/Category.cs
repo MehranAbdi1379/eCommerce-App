@@ -16,6 +16,8 @@ namespace eCommerce.Domain.Models
             SetTitle(title);
         }
 
+        public Category() { }
+
         public void SetParentCategoryId(Guid parentCategoryId, ICategoryRepository categoryRespository)
         {
             if (!categoryRespository.IsExist(parentCategoryId))
@@ -32,7 +34,7 @@ namespace eCommerce.Domain.Models
         }
 
         public string Title { get; private set; }
-        public Guid ParentCategoryId { get; private set; }
+        public Guid? ParentCategoryId { get; private set; }
         public int Index { get; private set; } = 0;
     }
 }

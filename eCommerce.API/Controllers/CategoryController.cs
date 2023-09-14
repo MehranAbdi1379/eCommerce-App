@@ -1,6 +1,7 @@
 ﻿using eCommerce.Domain.Models;
 using eCommerce.Service;
 using eCommerce.Service.Contracts.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -28,16 +29,29 @@ namespace eCommerce.API.Controllers
         [HttpGet]
         public async Task<List<Category>> GetSubCategoriesByParentId(IdDTO dto) => await categoryService.GetSubCategoriesByParentId(dto);
 
-        [Route("create")]
+        [Route("create-root")]
+        [Authorize(Roles = "admin")]
         [HttpPost]
-        public async Task<Category> Create(CategoryCreateDTO dto) => await categoryService.Create(dto);
+        public async Task<Category> CreateRoot(CategoryRootCreateDTO dto) => await categoryService.CreateRoot(dto);
+
+        [Route("create-with-parent")]
+        [Authorize(Roles = "admin")]
+        [HttpPost]
+        public async Task<Category> CreateWithParent(CategoryWithParentCreateDTO dto) => await categoryService.CreateWithParent(dto);
 
         [Route("update")]
+        [Authorize(Roles = "admin")]
         [HttpPatch]
         public async Task<Category> Update(CategoryUpdateDTO dto) => await categoryService.Update(dto);
 
         [Route("update-parent-id")]
+        [Authorize(Roles = "admin")]
         [HttpPatch]
         public async Task<Category> UpdateParentId(CategoryUpdateParentIdDTO dto) => await categoryService.UpdateParentId(dto);
+
+        [Route("delete")]
+        [Authorize(Roles = "admin")]
+        [HttpDelete]
+        public async Task<Category> Delete(IdDTO dto) => await categoryService.Delete(dto);
     }
 }
