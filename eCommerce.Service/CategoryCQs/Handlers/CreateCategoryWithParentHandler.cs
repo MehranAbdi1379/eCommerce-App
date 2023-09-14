@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Service.CategoryCQs.Handlers
 {
-    public class CreateCategoryHandler : IRequestHandler<CreateCategoryCommand, Category>
+    public class CreateCategoryWithParentHandler : IRequestHandler<CreateCategoryWithParentCommand, Category>
     {
         private readonly ICategoryRepository categoryRepository;
-        public CreateCategoryHandler(ICategoryRepository categoryRepository)
+        public CreateCategoryWithParentHandler(ICategoryRepository categoryRepository)
         {
             this.categoryRepository = categoryRepository;
         }
-
-        public Task<Category> Handle(CreateCategoryCommand request, CancellationToken cancellationToken)
+        public Task<Category> Handle(CreateCategoryWithParentCommand request, CancellationToken cancellationToken)
         {
             var category = new Category(request.dto.Title);
+            category.SetParentCategoryId(request.dto.ParentId, categoryRepository);
             categoryRepository.Create(category);
             categoryRepository.Save();
             return Task.FromResult(category);
