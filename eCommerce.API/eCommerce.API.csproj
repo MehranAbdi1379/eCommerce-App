@@ -29,4 +29,8 @@
     <ProjectReference Include="..\Framework.Authentication\Framework.Authentication.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MiddleWare\" />
+  </ItemGroup>
+
 </Project>

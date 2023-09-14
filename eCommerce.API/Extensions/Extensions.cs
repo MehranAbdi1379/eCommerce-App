@@ -1,5 +1,8 @@
 ﻿using eCommerce.Repository.Authentication;
+using eCommerce.Repository.Authentication.SeedData;
+using eCommerce.Repository.Main;
 using eCommerce.Repository.Main.DataBase;
+using eCommerce.Repository.Main.SeedData;
 using eCommerce.Service;
 using eCommerce.Service.Contracts;
 using MediatR;
@@ -20,7 +23,13 @@ namespace eCommerce.API.Extensions
         public static void AddDIForServices(this WebApplicationBuilder builder)
         {
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ICategoryService, CategoryService>();
             builder.Services.AddMediatR(x => x.RegisterServicesFromAssemblies(typeof(MediatREntryPointClass).Assembly));
+        }
+
+        public static void AddDIForRepositories(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddScoped<ICategoryRepository, CategoryRespository>();
         }
 
         public static void AddAuthenticationAndAuthorization(this WebApplicationBuilder builder)
@@ -100,6 +109,24 @@ namespace eCommerce.API.Extensions
                 };
             });
 
+        }
+
+        public static void SeedCategoryData(this IServiceCollection service)
+        {
+            using var scope = service.BuildServiceProvider().CreateScope();
+            var eCommerceDBContext = scope.ServiceProvider.GetService<eCommerceDBContext>();
+            var categorySeedData = new CategorySeedData(eCommerceDBContext);
+            if (eCommerceDBContext.Categories.Count() == 0)
+                categorySeedData.SeedData();
+        }
+
+        public static void SeedUserData(this IServiceCollection service)
+        {
+            using var scope = service.BuildServiceProvider().CreateScope();
+            var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
+            var userSeedData = new UserSeedData(userManager);
+            if (userManager.Users.Count() == 0)
+                userSeedData.SeedData();
         }
     }
 }

@@ -9,6 +9,7 @@ builder.Services.AddControllers();
 builder.AddDataBaseContexts();
 builder.AddAuthenticationAndAuthorization();
 builder.AddDIForServices();
+builder.AddDIForRepositories();
 builder.AddCors();
 builder.AddEmailService();
 
@@ -18,6 +19,9 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
+
+builder.Services.SeedCategoryData();
+builder.Services.SeedUserData();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
