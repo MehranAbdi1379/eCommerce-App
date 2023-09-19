@@ -29,6 +29,10 @@ namespace eCommerce.API.Controllers
         [HttpGet]
         public async Task<List<Category>> GetSubCategoriesByParentId(IdDTO dto) => await categoryService.GetSubCategoriesByParentId(dto);
 
+        [Route("get-all-sub-categories-by-parent-id")]
+        [HttpGet]
+        public IActionResult GetAllSubCategories([FromQuery] IdDTO dto) => Ok(categoryService.GetAllSubCategoriesByParentId(dto));
+
         [Route("create-root")]
         [Authorize(Roles = "admin")]
         [HttpPost]
