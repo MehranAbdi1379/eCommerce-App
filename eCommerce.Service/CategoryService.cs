@@ -1,5 +1,7 @@
 ﻿using eCommerce.Domain.Models;
+using eCommerce.Repository.Main;
 using eCommerce.Service.CategoryCQs.Commands;
+using eCommerce.Service.CategoryCQs.Handlers;
 using eCommerce.Service.CategoryCQs.Queries;
 using eCommerce.Service.Contracts.DTO;
 using MediatR;
@@ -14,9 +16,11 @@ namespace eCommerce.Service
     public class CategoryService : ICategoryService
     {
         private readonly IMediator mediator;
-        public CategoryService(IMediator mediator)
+        private readonly ICategoryRepository categoryRepository;
+        public CategoryService(IMediator mediator, ICategoryRepository categoryRepository)
         {
             this.mediator = mediator;
+            this.categoryRepository = categoryRepository;
         }
 
         public async Task<Category> CreateRoot(CategoryRootCreateDTO dto) => await mediator.Send(new CreateCategoryRootCommand(dto));
@@ -27,5 +31,7 @@ namespace eCommerce.Service
         public async Task<List<Category>> GetSubCategoriesByParentId(IdDTO dto) => await mediator.Send(new GetSubCategoriesByParentIdQuery(dto));
         public async Task<Category> Update(CategoryUpdateDTO dto) => await mediator.Send(new UpdateCategoryCommand(dto));
         public async Task<Category> UpdateParentId(CategoryUpdateParentIdDTO dto) => await mediator.Send(new UpdateCategoryParentCategoryIdCommand(dto));
+        public async Task<List<Category>> GetAllSubCategoriesByParentId(IdDTO dto) => await mediator.Send(new GetAllSubCategoriesByParentIdQuery(dto));
+        
     }
 }
