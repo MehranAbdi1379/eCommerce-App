@@ -49,9 +49,9 @@ public class AuthManager
     private async Task<List<Claim>> GetClaims()
     {
         var claims = new List<Claim>
- {
- new Claim(ClaimTypes.Email, user.Email)
- };
+    {
+    new Claim(ClaimTypes.Email, user.Email)
+     };
         var roles = await userManager.GetRolesAsync(user);
         foreach (var role in roles)
         {
