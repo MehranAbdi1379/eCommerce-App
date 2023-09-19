@@ -9,7 +9,7 @@ class AdminService {
         if (res.data.role == "admin") {
           localStorage.setItem("token", res.data.token);
           localStorage.setItem("userId", res.data.userId);
-          navigate("/admin");
+          navigate("/admin/logged-in");
         } else {
           alert("You are not an Admin");
         }

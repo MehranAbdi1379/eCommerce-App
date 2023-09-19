@@ -32,7 +32,7 @@ const PasswordResetRequestPage = () => {
           <Button type="submit">Send Password Reset Email</Button>
         </FormControl>
         {passwordResetEmailSent && (
-          <Text color={"red.300"}>Password reset email has been sent.</Text>
+          <Text color={"green.300"}>Password reset email has been sent.</Text>
         )}
       </Form>
     </Container>
