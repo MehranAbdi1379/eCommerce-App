@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 const Navbar = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const role = localStorage.getItem("role");
   return (
     <Flex
       padding={"2vh 10vw"}
@@ -42,7 +43,7 @@ const Navbar = () => {
       </Flex>
 
       <Flex gap={3}>
-        {token && (
+        {token && role == "customer" && (
           <Menu>
             <MenuButton as={Button}>Logged In</MenuButton>
             <MenuList>

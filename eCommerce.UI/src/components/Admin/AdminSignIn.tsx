@@ -8,6 +8,7 @@ import {
   FormLabel,
   Button,
   Text,
+  Heading,
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 
@@ -18,7 +19,10 @@ const AdminSignIn = () => {
   const navigate = useNavigate();
 
   return (
-    <Container>
+    <Container border={"2px solid gray"} borderRadius={"10px"} padding={"20px"}>
+      <Heading marginBottom={"1.5rem"} fontSize={"1.5rem"}>
+        Log In
+      </Heading>
       <Form
         onSubmit={handleSignInSubmit((data) =>
           SignIn(data.email, data.password, navigate)
