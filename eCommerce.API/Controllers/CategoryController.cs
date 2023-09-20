@@ -53,6 +53,11 @@ namespace eCommerce.API.Controllers
         [HttpPatch]
         public async Task<Category> UpdateParentId(CategoryUpdateParentIdDTO dto) => await categoryService.UpdateParentId(dto);
 
+        [Route("remove-parent-id")]
+        [Authorize(Roles = "admin")]
+        [HttpPatch]
+        public async Task<Category> UpdateRemoveParentId(IdDTO dto) => await categoryService.UpdateRemoveParentId(dto);
+
         [Route("delete")]
         [Authorize(Roles = "admin")]
         [HttpDelete]

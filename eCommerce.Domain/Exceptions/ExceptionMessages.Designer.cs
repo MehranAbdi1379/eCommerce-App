@@ -61,6 +61,15 @@ namespace eCommerce.Domain.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Title already exists in a neighboor category.
+        /// </summary>
+        internal static string CategoryNeighboorTitleExistsExceptionMessage {
+            get {
+                return ResourceManager.GetString("CategoryNeighboorTitleExistsExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Category does not exist.
         /// </summary>
         internal static string CategoryNotExistExceptionMessage {

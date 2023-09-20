@@ -18,12 +18,29 @@ namespace eCommerce.Domain.Models
 
         public Category() { }
 
-        public void SetParentCategoryId(Guid parentCategoryId, ICategoryRepository categoryRespository)
+        public void SetParentCategoryId(Guid parentCategoryId, ICategoryRepository categoryRepository)
         {
-            if (!categoryRespository.IsExist(parentCategoryId))
+            if (!categoryRepository.IsExist(parentCategoryId))
                 throw new CategoryNotExistException();
+            var neightBoorCategories = categoryRepository.GetNeighboorCategories(parentCategoryId);
+            neightBoorCategories.Remove(this);
+            foreach (var category in neightBoorCategories)
+            {
+                if (category.Title == this.Title)
+                    throw new CategoryNeighboorTitleExistsException();
+            }
             ParentCategoryId = parentCategoryId;
-            Index = categoryRespository.GetById(parentCategoryId).Index + 1;
+        }
+
+        public void RemoveParentCategoryId(ICategoryRepository categoryRepository)
+        {
+            var rootCategories = categoryRepository.GetRootCategories();
+            foreach (var category in rootCategories)
+            {
+                if (category.Title == this.Title)
+                    throw new CategoryNeighboorTitleExistsException();
+            }
+            ParentCategoryId = null;
         }
 
         public void SetTitle(string title)
@@ -35,6 +52,5 @@ namespace eCommerce.Domain.Models
 
         public string Title { get; private set; }
         public Guid? ParentCategoryId { get; private set; }
-        public int Index { get; private set; } = 0;
     }
 }
