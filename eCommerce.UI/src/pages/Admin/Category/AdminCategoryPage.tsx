@@ -1,6 +1,6 @@
 import React from "react";
-import AdminCategories from "../../../components/Admin/AdminCategories";
-import { Button, HStack } from "@chakra-ui/react";
+import AdminCategories from "../../../components/Admin/Category/AdminCategories";
+import { Button, HStack, Text } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 
 const AdminCategoryPage = () => {
@@ -9,8 +9,10 @@ const AdminCategoryPage = () => {
     <div>
       <HStack>
         <Button onClick={() => navigate("create")}>Create</Button>
-        <Button onClick={() => navigate("edit")}>Edit</Button>
-        <Button onClick={() => navigate("delete")}>Delete</Button>
+        <HStack>
+          <Text color={"red"}>Tip: </Text>
+          <Text>Click on the category to edit or delete it.</Text>
+        </HStack>
       </HStack>
 
       <AdminCategories></AdminCategories>
