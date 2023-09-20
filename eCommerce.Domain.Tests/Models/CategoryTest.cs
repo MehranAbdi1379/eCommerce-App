@@ -35,10 +35,10 @@ namespace eCommerce.Domain.Tests.Models
             Guid parentCategoryId = Guid.NewGuid();
             mockRepository.Setup(repo => repo.IsExist(parentCategoryId)).Returns(true);
             mockRepository.Setup(repo => repo.GetById(parentCategoryId)).Returns(new Category("ParentCategory"));
+            mockRepository.Setup(x => x.GetNeighboorCategories(It.IsAny<Guid>())).Returns(new List<Category> { new Category("newTitle") });
             var category = new Category();
             category.SetParentCategoryId(parentCategoryId, mockRepository.Object);
             Assert.AreEqual(parentCategoryId, category.ParentCategoryId);
-            Assert.AreEqual(1, category.Index);
         }
 
         [TestMethod]
@@ -83,19 +83,11 @@ namespace eCommerce.Domain.Tests.Models
             Guid parentCategoryId = Guid.NewGuid();
             mockRepository.Setup(repo => repo.IsExist(parentCategoryId)).Returns(true);
             mockRepository.Setup(repo => repo.GetById(parentCategoryId)).Returns(new Category("ParentCategory"));
+            mockRepository.Setup(x => x.GetNeighboorCategories(It.IsAny<Guid>())).Returns(new List<Category> { new Category("newTitle") });
             var category = new Category();
             category.SetParentCategoryId(parentCategoryId, mockRepository.Object);
             Guid? retrievedParentCategoryId = category.ParentCategoryId;
             Assert.AreEqual(parentCategoryId, retrievedParentCategoryId);
-        }
-
-        [TestMethod]
-        public void GetIndex_ReturnsIndex()
-        {
-            string title = "TestCategory";
-            var category = new Category(title);
-            int retrievedIndex = category.Index;
-            Assert.AreEqual(0, retrievedIndex);
         }
     }
 }

@@ -19,5 +19,33 @@ namespace eCommerce.Repository.Main
         {
             return context.Set<Category>().Where(x => x.ParentCategoryId == parentId).ToList();
         }
+
+        public List<Category> GetNeighboorCategories(Guid parentCategoryId)
+        {
+            return context.Set<Category>().Where(x => x.ParentCategoryId == parentCategoryId).ToList();
+        }
+
+        public List<Category> GetRootCategories()
+        {
+            return context.Set<Category>().Where(x => x.ParentCategoryId == null).ToList();
+        }
+
+        public List<Category> GetAllSubCategoriesByParentId(Guid parentId)
+        {
+            var category = GetById(parentId);
+            var allCategories = new List<Category>();
+            GetFirstLevelSubCategoriesAndAddThemToAllCategoriesReccursivly(allCategories, category);
+            return allCategories;
+        }
+
+        private void GetFirstLevelSubCategoriesAndAddThemToAllCategoriesReccursivly(List<Category> categories, Category parentCategory)
+        {
+            var subCategories = GetSubCategoriesByParentId(parentCategory.Id);
+            foreach (var subCategory in subCategories)
+            {
+                categories.Add(subCategory);
+                GetFirstLevelSubCategoriesAndAddThemToAllCategoriesReccursivly(categories, subCategory);
+            }
+        }
     }
 }
