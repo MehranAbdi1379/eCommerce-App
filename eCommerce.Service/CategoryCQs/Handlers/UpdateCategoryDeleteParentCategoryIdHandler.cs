@@ -1,7 +1,6 @@
 ﻿using eCommerce.Domain.Models;
 using eCommerce.Repository.Main;
 using eCommerce.Service.CategoryCQs.Commands;
-using eCommerce.Service.Exceptions;
 using MediatR;
 using System;
 using System.Collections.Generic;
@@ -11,19 +10,18 @@ using System.Threading.Tasks;
 
 namespace eCommerce.Service.CategoryCQs.Handlers
 {
-    public class DeleteCategoryHandler : IRequestHandler<DeleteCategoryCommand, Category>
+    public class UpdateCategoryDeleteParentCategoryIdHandler : IRequestHandler<UpdateCategoryDeleteParentCategoryIdCommand, Category>
     {
         private readonly ICategoryRepository categoryRepository;
-        public DeleteCategoryHandler(ICategoryRepository categoryRepository)
+        public UpdateCategoryDeleteParentCategoryIdHandler(ICategoryRepository categoryRepository)
         {
             this.categoryRepository = categoryRepository;
         }
-        public Task<Category> Handle(DeleteCategoryCommand request, CancellationToken cancellationToken)
+        public Task<Category> Handle(UpdateCategoryDeleteParentCategoryIdCommand request, CancellationToken cancellationToken)
         {
             var category = categoryRepository.GetById(request.dto.Id);
-            if (categoryRepository.GetSubCategoriesByParentId(request.dto.Id).Count != 0)
-                throw new CategoryDeleteSubCategoryExistException();
-            categoryRepository.Delete(category);
+            category.RemoveParentCategoryId(categoryRepository);
+            categoryRepository.Update(category);
             categoryRepository.Save();
             return Task.FromResult(category);
         }

@@ -20,20 +20,7 @@ namespace eCommerce.Service.CategoryCQs.Handlers
 
         public Task<List<Category>> Handle(GetAllSubCategoriesByParentIdQuery request, CancellationToken cancellationToken)
         {
-            var category = categoryRepository.GetById(request.dto.Id);
-            var allCategories = new List<Category>();
-            GetFirstLevelSubCategoriesAndAddThemToAllCategoriesReccursivly(allCategories, category);
-            return Task.FromResult(allCategories);
-        }
-
-        private void GetFirstLevelSubCategoriesAndAddThemToAllCategoriesReccursivly(List<Category> categories, Category parentCategory)
-        {
-            var subCategories = categoryRepository.GetSubCategoriesByParentId(parentCategory.Id);
-            foreach (var subCategory in subCategories)
-            {
-                categories.Add(subCategory);
-                GetFirstLevelSubCategoriesAndAddThemToAllCategoriesReccursivly(categories, subCategory);
-            }
+            return Task.FromResult(categoryRepository.GetAllSubCategoriesByParentId(request.dto.Id));
         }
     }
 }

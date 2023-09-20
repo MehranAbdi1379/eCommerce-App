@@ -32,6 +32,7 @@ namespace eCommerce.Service
         public async Task<Category> Update(CategoryUpdateDTO dto) => await mediator.Send(new UpdateCategoryCommand(dto));
         public async Task<Category> UpdateParentId(CategoryUpdateParentIdDTO dto) => await mediator.Send(new UpdateCategoryParentCategoryIdCommand(dto));
         public async Task<List<Category>> GetAllSubCategoriesByParentId(IdDTO dto) => await mediator.Send(new GetAllSubCategoriesByParentIdQuery(dto));
+        public async Task<Category> UpdateRemoveParentId(IdDTO dto) => await mediator.Send(new UpdateCategoryDeleteParentCategoryIdCommand(dto));
         
     }
 }
