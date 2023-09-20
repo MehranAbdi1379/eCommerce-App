@@ -14,5 +14,6 @@ namespace eCommerce.Service
         Task<Category> Update(CategoryUpdateDTO dto);
         Task<Category> UpdateParentId(CategoryUpdateParentIdDTO dto);
         Task<List<Category>> GetAllSubCategoriesByParentId(IdDTO dto);
+        Task<Category> UpdateRemoveParentId(IdDTO dto);
     }
 }

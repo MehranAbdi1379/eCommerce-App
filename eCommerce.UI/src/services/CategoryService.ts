@@ -34,38 +34,43 @@ class CategoryService {
       .catch((err: any) => console.log(err));
   }
 
-  createRoot(title: any, onSuccess: any, onError: any) {
+  createRoot(title: any, navigate: any, onError: any) {
     AuthApiClient()
       .post("category/create-root", { title })
-      .then((res: any) => onSuccess(res.data))
-      .catch((err: any) => onError(err));
+      .then((res) => navigate("/admin/category"))
+      .catch((err) => onError(err));
   }
 
-  createWithParent(title: any, parentId: any, onSuccess: any, onError: any) {
+  createWithParent(title: any, parentId: any, navigate: any, onError: any) {
     AuthApiClient()
       .post("category/create-with-parent", { title, parentId })
-      .then((res: any) => onSuccess(res.data))
+      .then((res: any) => navigate("/admin/category"))
       .catch((err: any) => onError(err));
   }
 
-  update(id: any, title: any, onSuccess: any, onError: any) {
+  update(id: any, title: any, navigate: any, onError: any) {
     AuthApiClient()
       .patch("category/update", { id, title })
-      .then((res: any) => onSuccess(res.data))
+      .then((res: any) => navigate("/admin/category"))
       .catch((err: any) => onError(err));
   }
 
-  updateParentId(id: any, parentId: any, onSuccess: any, onError: any) {
+  updateParentId(id: any, parentId: any, onError: any) {
     AuthApiClient()
       .patch("category/update-parent-id", { id, parentId })
-      .then((res: any) => onSuccess(res.data))
       .catch((err: any) => onError(err));
   }
 
-  deleteCategory(id: any, onSuccess: any, onError: any) {
+  removeParentId(id: any, onError: any) {
+    AuthApiClient()
+      .patch("category/remove-parent-id", { id })
+      .catch((err) => onError(err));
+  }
+
+  deleteCategory(id: any, navigate: any, onError: any) {
     AuthApiClient()
       .delete(`category/delete`, { data: { id } })
-      .then((res: any) => onSuccess(res.data))
+      .then((res: any) => navigate("/admin/category"))
       .catch((err: any) => onError(err));
   }
 }

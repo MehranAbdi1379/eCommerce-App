@@ -16,6 +16,7 @@ import AdminRootLayout from "./layouts/Admin/AdminRootLayout";
 import AdminMainPage from "./pages/Admin/AdminMainPage";
 import AdminCategoryPage from "./pages/Admin/Category/AdminCategoryPage";
 import AdminCategoryCreatePage from "./pages/Admin/Category/AdminCategoryCreatePage";
+import AdminCategoryEditPage from "./pages/Admin/Category/AdminCategoryEditPage";
 
 function App() {
   const router = createBrowserRouter(
@@ -41,6 +42,7 @@ function App() {
           <Route path="category">
             <Route index element={<AdminCategoryPage />}></Route>
             <Route path="create" element={<AdminCategoryCreatePage />}></Route>
+            <Route path="edit" element={<AdminCategoryEditPage />}></Route>
           </Route>
         </Route>
       </Route>

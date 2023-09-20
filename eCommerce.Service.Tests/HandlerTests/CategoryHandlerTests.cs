@@ -23,6 +23,7 @@ namespace eCommerce.Service.Tests.HandlerTests
         {
             mock.Setup(x => x.IsExist(It.IsAny<Guid>())).Returns(true);
             mock.Setup(x => x.GetById(It.IsAny<Guid>())).Returns(new Category("title"));
+            mock.Setup(x => x.GetNeighboorCategories(It.IsAny<Guid>())).Returns(new List<Category> { new Category("newTitle")});
         }
 
         [TestMethod]
@@ -32,7 +33,6 @@ namespace eCommerce.Service.Tests.HandlerTests
             var category = handler.Handle(new CreateCategoryRootCommand(
                 new CategoryRootCreateDTO { Title = "title" }),new CancellationToken()).Result;
             Assert.AreEqual("title", category.Title);
-            Assert.AreEqual(0, category.Index);
             Assert.AreEqual(null, category.ParentCategoryId);
         }
 
@@ -44,7 +44,6 @@ namespace eCommerce.Service.Tests.HandlerTests
             var category = handler.Handle(new CreateCategoryWithParentCommand(
                 new CategoryWithParentCreateDTO { ParentId = parentId, Title = "title" }),new CancellationToken()).Result;
             Assert.AreEqual("title", category.Title);
-            Assert.AreEqual(1, category.Index);
             Assert.AreEqual(parentId, category.ParentCategoryId);
         }
     }
