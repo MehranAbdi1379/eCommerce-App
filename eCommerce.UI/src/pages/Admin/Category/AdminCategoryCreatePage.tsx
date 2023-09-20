@@ -9,35 +9,35 @@ import {
   Select,
   Text,
 } from "@chakra-ui/react";
-import { Form, Link } from "react-router-dom";
+import { Form, Link, useNavigate } from "react-router-dom";
 import SignIn from "../../../components/Global/SignIn";
 import { useForm } from "react-hook-form";
-import { useEffect, useState } from "react";
+import { CSSProperties, useEffect, useState } from "react";
 import CategoryService, { Category } from "../../../services/CategoryService";
-import AdminCategories from "../../../components/Admin/AdminCategories";
-import AdminCategoryTree from "../../../components/Admin/AdminCategoryTree";
+import AdminCategories from "../../../components/Admin/Category/AdminCategories";
+import AdminCategoryTree from "../../../components/Admin/Category/AdminCategoryTree";
+import AdminCategorySelectOverlay from "../../../components/Admin/Category/AdminCategorySelectOverlay";
+
+const overlayStyles: CSSProperties = {
+  position: "fixed",
+  top: 0,
+  left: 0,
+  right: 0,
+  bottom: 0,
+  backgroundColor: "rgba(0, 0, 0, 0.7)",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  zIndex: 1000,
+};
 
 const AdminCategoryCreatePage = () => {
   const { register, handleSubmit } = useForm();
-  const [categories, setCategories] = useState<Category[]>();
-  const { getAll, createRoot, createWithParent } = new CategoryService();
+  const { createRoot, createWithParent } = new CategoryService();
   const [showCategories, setShowCategories] = useState(false);
-  var sortedCategories: Category[] = [];
-  categories?.forEach((category) => {
-    sortedCategories.push(category);
-  });
-  sortedCategories?.sort((a, b) => {
-    const titleA = a.title.toLowerCase();
-    const titleB = b.title.toLowerCase();
-
-    if (titleA < titleB) return -1;
-    if (titleA > titleB) return 1;
-    return 0;
-  });
-
-  useEffect(() => {
-    getAll(setCategories);
-  }, []);
+  const [parentCategory, setParentCategory] = useState<Category>();
+  const navigate = useNavigate();
+  const [error, setError] = useState();
 
   return (
     <>
@@ -48,57 +48,63 @@ const AdminCategoryCreatePage = () => {
       >
         <Form
           onSubmit={handleSubmit((data) => {
-            if (data.parentId == "Root Category") {
-              createRoot(data.title, null, null);
+            if (parentCategory == undefined) {
+              createRoot(data.title, navigate, setError);
             } else {
-              createWithParent(data.title, data.parentId, null, null);
+              createWithParent(
+                data.title,
+                parentCategory.id,
+                navigate,
+                setError
+              );
             }
           })}
         >
           <FormControl marginBottom={"1.3em"}>
             <FormLabel>Title</FormLabel>
-            <Input {...register("email")} placeholder="Title"></Input>
+            <Input {...register("title")} placeholder="Title"></Input>
           </FormControl>
           <FormControl>
-            <HStack>
-              <FormLabel>Parent</FormLabel>
-              <Button
-                onClick={() => {
-                  if (showCategories == true) setShowCategories(false);
-                  if (showCategories == false) setShowCategories(true);
-                }}
-                fontSize={"1rem"}
-                padding={2}
-                marginBottom={4}
-              >
-                {showCategories && <text>Hide Category Tree</text>}
-                {!showCategories && <text>Show Category Tree</text>}
-              </Button>
-            </HStack>
-
-            <Select>
-              <option {...register("parentId")}>Root Category</option>
-              {sortedCategories?.map((category) => (
-                <option
-                  key={category.id}
-                  value={category.title}
-                  {...register("parentId")}
-                >
-                  {category.title}
-                </option>
-              ))}
-            </Select>
-            <FormHelperText>Select an option</FormHelperText>
+            <FormLabel>
+              Parent Category: {parentCategory?.title}{" "}
+              {parentCategory == undefined ? "Root Category" : ""}
+            </FormLabel>
+            <Button
+              onClick={() => {
+                setShowCategories(!showCategories);
+              }}
+              fontSize={"1rem"}
+              padding={2}
+              marginBottom={4}
+              marginRight={4}
+            >
+              Select Parent Category
+            </Button>
+            <Button
+              onClick={() => {
+                setParentCategory(undefined);
+              }}
+              fontSize={"1rem"}
+              padding={2}
+              marginBottom={4}
+            >
+              Delete Parent Category
+            </Button>
           </FormControl>
           <FormControl>
             <Button type="submit">Create</Button>
           </FormControl>
         </Form>
       </Container>
-      {showCategories &&
-        categories?.map((category) => (
-          <AdminCategoryTree categories={categories} category={category} />
-        ))}
+      {showCategories && (
+        <div style={overlayStyles}>
+          <AdminCategorySelectOverlay
+            parentCategory={parentCategory}
+            setShowCategories={setShowCategories}
+            setParentCategory={setParentCategory}
+          />
+        </div>
+      )}
     </>
   );
 };
