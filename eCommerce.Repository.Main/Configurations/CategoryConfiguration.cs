@@ -19,7 +19,6 @@ namespace eCommerce.Repository.Main.Configurations
         {
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Title).IsRequired();
-            builder.Property(x => x.Index).IsRequired();
             builder.Property(x => x.ParentCategoryId).IsRequired(false);
         }
     }

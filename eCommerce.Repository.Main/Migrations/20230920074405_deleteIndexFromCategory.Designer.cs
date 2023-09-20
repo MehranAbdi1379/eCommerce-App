@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerce.Repository.Main.DataBase;
 
@@ -11,9 +12,11 @@ using eCommerce.Repository.Main.DataBase;
 namespace eCommerce.Repository.Main.Migrations
 {
     [DbContext(typeof(eCommerceDBContext))]
-    partial class eCommerceDBContextModelSnapshot : ModelSnapshot
+    [Migration("20230920074405_deleteIndexFromCategory")]
+    partial class deleteIndexFromCategory
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
