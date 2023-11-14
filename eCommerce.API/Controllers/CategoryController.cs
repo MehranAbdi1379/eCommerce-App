@@ -27,11 +27,11 @@ namespace eCommerce.API.Controllers
 
         [Route("get-sub-categories-by-parent-id")]
         [HttpGet]
-        public async Task<List<Category>> GetSubCategoriesByParentId(IdDTO dto) => await categoryService.GetSubCategoriesByParentId(dto);
+        public async Task<List<Category>> GetSubCategoriesByParentId([FromQuery] IdDTO dto) => await categoryService.GetSubCategoriesByParentId(dto);
 
         [Route("get-all-sub-categories-by-parent-id")]
         [HttpGet]
-        public IActionResult GetAllSubCategories([FromQuery] IdDTO dto) => Ok(categoryService.GetAllSubCategoriesByParentId(dto));
+        public async Task<List<Category>> GetAllSubCategories([FromQuery] IdDTO dto) => await categoryService.GetAllSubCategoriesByParentId(dto);
 
         [Route("create-root")]
         [Authorize(Roles = "admin")]

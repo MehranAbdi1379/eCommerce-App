@@ -1,4 +1,5 @@
-﻿using eCommerce.Repository.Authentication;
+﻿using eCommerce.Domain.Models;
+using eCommerce.Repository.Authentication;
 using eCommerce.Repository.Authentication.SeedData;
 using eCommerce.Repository.Main;
 using eCommerce.Repository.Main.DataBase;
@@ -7,10 +8,12 @@ using eCommerce.Service;
 using eCommerce.Service.Contracts;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using NETCore.MailKit.Extensions;
 using NETCore.MailKit.Infrastructure;
 using NETCore.MailKit.Infrastructure.Internal;
@@ -37,6 +40,16 @@ namespace eCommerce.API.Extensions
             builder.Services.AddAuthentication();
             builder.Services.ConfigureIdentity();
             builder.Services.ConfigureJWT(builder.Configuration);
+            //builder.AddAuthorization();
+
+        }
+
+        public static void AddAuthorization(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddAuthorization(opt =>
+            opt.FallbackPolicy = new AuthorizationPolicyBuilder()
+            .RequireAuthenticatedUser()
+            .Build());
         }
 
         public static void AddCors(this WebApplicationBuilder builder)
@@ -62,7 +75,7 @@ namespace eCommerce.API.Extensions
         }
         public static void ConfigureIdentity(this IServiceCollection services)
         {
-            services.AddIdentity<IdentityUser, IdentityRole>(o =>
+            services.AddIdentity<ApiUser, IdentityRole>(o =>
             {
                 o.Password.RequireDigit = true;
                 o.Password.RequireLowercase = false;
@@ -111,6 +124,38 @@ namespace eCommerce.API.Extensions
 
         }
 
+        public static void AddSwagger(this WebApplicationBuilder builder)
+        {
+            builder.Services.AddSwaggerGen(opt =>
+            {
+                opt.SwaggerDoc("v1", new OpenApiInfo { Title = "MyAPI", Version = "v1" });
+                opt.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Please enter token",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.Http,
+                    BearerFormat = "JWT",
+                    Scheme = "bearer"
+                });
+
+                opt.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+            });
+        }
+
         public static void SeedCategoryData(this IServiceCollection service)
         {
             using var scope = service.BuildServiceProvider().CreateScope();
@@ -119,14 +164,23 @@ namespace eCommerce.API.Extensions
             if (eCommerceDBContext.Categories.Count() == 0)
                 categorySeedData.SeedData();
         }
+        public static async Task SeedUserRoleData(this IServiceCollection services)
+        {
+            using var scope = services.BuildServiceProvider().CreateScope();
+            var roleManager = scope.ServiceProvider.GetService<RoleManager<IdentityRole>>();
+            var userRoleSeedData = new RoleSeedData(roleManager);
+            if (roleManager.Roles.Count() == 0)
+                await userRoleSeedData.SeedData();
+        }
 
         public static async Task SeedUserData(this IServiceCollection service)
         {
             using var scope = service.BuildServiceProvider().CreateScope();
-            var userManager = scope.ServiceProvider.GetService<UserManager<IdentityUser>>();
+            var userManager = scope.ServiceProvider.GetService<UserManager<ApiUser>>();
             var userSeedData = new UserSeedData(userManager);
             if (userManager.Users.Count() == 0)
                 await userSeedData.SeedData();
         }
+
     }
 }

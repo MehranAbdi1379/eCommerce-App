@@ -1,11 +1,13 @@
 ﻿using eCommerce.Service.Contracts;
 using eCommerce.Service.Contracts.DTO;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace eCommerce.API.Controllers;
 
 [Route("api/user")]
 [ApiController]
+//[AllowAnonymous]
 public class UserController : ControllerBase
 {
     private readonly IUserService userService;
@@ -27,7 +29,7 @@ public class UserController : ControllerBase
 
     [Route("sign-in")]
     [HttpGet]
-    public async Task<IActionResult> SignIn([FromQuery] SignUpDTO dto)
+    public async Task<IActionResult> SignIn([FromQuery] SignInDTO dto)
     {
         var signInInformation = await userService.SignIn(dto);
         if (signInInformation.Token != null)

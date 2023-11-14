@@ -4,11 +4,13 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using eCommerce.Service.Contracts;
 using Microsoft.AspNetCore.Mvc.Abstractions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace eCommerce.API.Controllers
 {
     [Route("api/email")]
     [ApiController]
+    //[AllowAnonymous]
     public class EmailController : ControllerBase
     {
         private readonly IUserService userService;
@@ -24,8 +26,8 @@ namespace eCommerce.API.Controllers
         {
             var result = await userService.VerifyEmail(dto.UserId, dto.Token);
             if (result.Succeeded)
-                return Ok();
-            return Unauthorized();
+                return Ok(result);
+            return Unauthorized(result);
         }
 
         [Route("send-reset-password-email")]
@@ -43,7 +45,7 @@ namespace eCommerce.API.Controllers
 
             if(result.Succeeded)
                 return Ok(result);
-            return BadRequest(result);
+            return Unauthorized(result);
         }
     }
 }
