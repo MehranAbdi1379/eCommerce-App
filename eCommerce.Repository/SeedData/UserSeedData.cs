@@ -11,8 +11,8 @@ namespace eCommerce.Repository.Authentication.SeedData
 {
     public class UserSeedData
     {
-        private readonly UserManager<IdentityUser> userManager;
-        public UserSeedData(UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApiUser> userManager;
+        public UserSeedData(UserManager<ApiUser> userManager)
         {
             this.userManager = userManager;
         }
@@ -25,8 +25,10 @@ namespace eCommerce.Repository.Authentication.SeedData
 
         private async Task SeedData_SeedCustomers()
         {
-            var userFaker = new Faker<IdentityUser>()
-            .RuleFor(c => c.Email, f => f.Person.Email);
+            var userFaker = new Faker<ApiUser>()
+            .RuleFor(c => c.Email, f => f.Person.Email)
+            .RuleFor(c => c.FirstName, f => f.Person.FirstName)
+            .RuleFor(c => c.LastName , f => f.Person.LastName);
 
             var users = userFaker.Generate(20);
 
@@ -41,9 +43,11 @@ namespace eCommerce.Repository.Authentication.SeedData
 
         private async Task SeedData_SeedAdmin()
         {
-            var admin = new IdentityUser()
+            var admin = new ApiUser()
             {
-                Email = "mehran@gmail.com"
+                Email = "mehran@gmail.com",
+                FirstName = "Mehran",
+                LastName = "Abdi"
             };
             admin.UserName = admin.Email;
             admin.EmailConfirmed = true;

@@ -1,4 +1,5 @@
-﻿using eCommerce.Service.Contracts.DTO;
+﻿using eCommerce.Domain.Models;
+using eCommerce.Service.Contracts.DTO;
 using eCommerce.Service.User.Queries;
 using Framework.Authentication.Service;
 using MediatR; 
@@ -14,12 +15,12 @@ namespace eCommerce.Service.User.Handlers
 {
     public class SignUserInHandler : IRequestHandler<SignUserInQuery, SignInInformationDTO>
     {
-        private readonly AuthManager authManager;
-        private readonly UserManager<IdentityUser> userManager;
-        public SignUserInHandler(IConfiguration configuration , UserManager<IdentityUser> userManager)
+        private readonly AuthManager<ApiUser> authManager;
+        private readonly UserManager<ApiUser> userManager;
+        public SignUserInHandler(IConfiguration configuration , UserManager<ApiUser> userManager)
         {
             this.userManager = userManager;
-            authManager = new AuthManager(userManager , configuration);
+            authManager = new AuthManager<ApiUser>(userManager , configuration);
         }
         public async Task<SignInInformationDTO> Handle(SignUserInQuery request, CancellationToken cancellationToken)
         {

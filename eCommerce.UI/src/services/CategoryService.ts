@@ -49,21 +49,20 @@ class CategoryService {
   }
 
   update(id: any, title: any, navigate: any, onError: any) {
-    AuthApiClient()
-      .patch("category/update", { id, title })
-      .then((res: any) => navigate("/admin/category"))
-      .catch((err: any) => onError(err));
+    return AuthApiClient().patch("category/update", { id, title });
   }
 
-  updateParentId(id: any, parentId: any, onError: any) {
+  updateParentId(id: any, parentId: any, navigate: any, onError: any) {
     AuthApiClient()
       .patch("category/update-parent-id", { id, parentId })
+      .then((res) => navigate("/admin/category"))
       .catch((err: any) => onError(err));
   }
 
-  removeParentId(id: any, onError: any) {
+  removeParentId(id: any, navigate: any, onError: any) {
     AuthApiClient()
       .patch("category/remove-parent-id", { id })
+      .then((res) => navigate("/admin/category"))
       .catch((err) => onError(err));
   }
 

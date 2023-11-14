@@ -47,28 +47,26 @@ const AdminCategorySelectTree = ({
             {category.title}
           </Button>
 
-          {childrenCategories.map((category) => (
+          {childrenCategories.map((cat) => (
             <ListItem
-              key={category.id}
+              key={cat.id}
               padding={2}
               margin={2}
               border={"1px gray solid"}
-              paddingLeft={`${(category.index + 1) * 20}px`}
+              paddingLeft={`20px`}
               borderRadius={"10px"}
             >
               <Button
-                colorScheme={
-                  parentCategory?.id == category.id ? "green" : "gray"
-                }
-                onClick={() => setParentCategoryAndClose(category)}
+                colorScheme={parentCategory?.id == cat.id ? "green" : "gray"}
+                onClick={() => setParentCategoryAndClose(cat)}
               >
-                {category.title}
+                {cat.title}
               </Button>
 
               <AdminCategorySelectTree
                 parentCategory={parentCategory}
                 setShowCategories={setShowCategories}
-                category={category}
+                category={cat}
                 categories={categories}
                 setParentCategory={setParentCategory}
               />

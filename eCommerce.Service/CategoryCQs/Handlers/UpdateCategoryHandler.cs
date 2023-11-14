@@ -23,6 +23,7 @@ namespace eCommerce.Service.CategoryCQs.Handlers
             var category = categoryRepository.GetById(request.dto.Id);
             category.SetTitle(request.dto.Title);
             categoryRepository.Update(category);
+            categoryRepository.Save();
             return Task.FromResult(category);
         }
     }

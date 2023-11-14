@@ -43,7 +43,7 @@ const Navbar = () => {
       </Flex>
 
       <Flex gap={3}>
-        {token && role == "customer" && (
+        {token && (
           <Menu>
             <MenuButton as={Button}>Logged In</MenuButton>
             <MenuList>

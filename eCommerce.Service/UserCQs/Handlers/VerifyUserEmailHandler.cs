@@ -1,4 +1,5 @@
-﻿using eCommerce.Service.User.Commands;
+﻿using eCommerce.Domain.Models;
+using eCommerce.Service.User.Commands;
 using MediatR;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,8 +12,8 @@ namespace eCommerce.Service.User.Handlers
 {
     public class VerifyUserEmailHandler : IRequestHandler<VerifyUserEmailCommand, IdentityResult>
     {
-        private readonly UserManager<IdentityUser> userManager;
-        public VerifyUserEmailHandler(UserManager<IdentityUser> userManager)
+        private readonly UserManager<ApiUser> userManager;
+        public VerifyUserEmailHandler(UserManager<ApiUser> userManager)
         {
             this.userManager = userManager;
         }

@@ -54,12 +54,18 @@ const AdminCategoryEditPage = () => {
       >
         <Form
           onSubmit={handleSubmit((data) => {
-            if (parentCategory != undefined) {
-              updateParentId(category.id, parentCategory.id, setError);
-            } else {
-              removeParentId(category.id, setError);
-            }
-            update(category.id, data.title, navigate, setError);
+            update(category.id, data.title, navigate, setError).then((res) => {
+              if (parentCategory != undefined) {
+                updateParentId(
+                  category.id,
+                  parentCategory.id,
+                  navigate,
+                  setError
+                );
+              } else {
+                removeParentId(category.id, navigate, setError);
+              }
+            });
           })}
         >
           <FormControl marginBottom={"1.3em"}>

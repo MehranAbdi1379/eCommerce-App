@@ -10,13 +10,13 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace Framework.Authentication.Service;
-public class AuthManager
+public class AuthManager<T> where T : IdentityUser
 {
-    private readonly UserManager<IdentityUser> userManager;
+    private readonly UserManager<T> userManager;
     private readonly IConfiguration configuration;
-    private IdentityUser? user;
+    private T? user;
 
-    public AuthManager(UserManager<IdentityUser> userManager, IConfiguration configuration)
+    public AuthManager(UserManager<T> userManager, IConfiguration configuration)
     {
         this.userManager = userManager;
         this.configuration = configuration;

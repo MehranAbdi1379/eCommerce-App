@@ -9,18 +9,15 @@ using System.Threading.Tasks;
 
 namespace Framework.Authentication.Repository
 {
-    public class AuthenticationDbContext: IdentityDbContext
+    public class AuthenticationDbContext<T>: IdentityDbContext<T> where T : IdentityUser
     {
-        private readonly List<IdentityRole> identityRoles;
-        public AuthenticationDbContext(DbContextOptions options , List<IdentityRole> identityRoles) : base(options)
+        public AuthenticationDbContext(DbContextOptions options) : base(options)
         {
-            this.identityRoles = identityRoles;
         }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<IdentityRole>().HasData(identityRoles);
         }
     }
 }

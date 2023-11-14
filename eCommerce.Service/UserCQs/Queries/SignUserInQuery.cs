@@ -8,4 +8,4 @@ using System.Text;
 using System.Threading.Tasks;
 
 namespace eCommerce.Service.User.Queries;
-public record SignUserInQuery(SignUpDTO Dto) : IRequest<SignInInformationDTO>;
+public record SignUserInQuery(SignInDTO Dto) : IRequest<SignInInformationDTO>;
