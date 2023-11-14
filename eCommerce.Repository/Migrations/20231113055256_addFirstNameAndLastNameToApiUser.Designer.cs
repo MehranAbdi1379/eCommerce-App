@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using eCommerce.Repository.Authentication;
 
@@ -11,9 +12,11 @@ using eCommerce.Repository.Authentication;
 namespace eCommerce.Repository.Migrations
 {
     [DbContext(typeof(eCommerceAuthDbContext))]
-    partial class eCommerceAuthDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231113055256_addFirstNameAndLastNameToApiUser")]
+    partial class addFirstNameAndLastNameToApiUser
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
