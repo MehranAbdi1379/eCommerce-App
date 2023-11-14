@@ -79,6 +79,15 @@ namespace eCommerce.Domain.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category can not be parent category for itself.
+        /// </summary>
+        internal static string CategoryOwnParentCategoryExcpetionMessage {
+            get {
+                return ResourceManager.GetString("CategoryOwnParentCategoryExcpetionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Index can not be a negative number.
         /// </summary>
         internal static string NegativeIndexExceptionMessage {

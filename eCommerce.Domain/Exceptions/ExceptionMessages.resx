@@ -123,6 +123,9 @@
   <data name="CategoryNotExistExceptionMessage" xml:space="preserve">
     <value>Category does not exist</value>
   </data>
+  <data name="CategoryOwnParentCategoryExcpetionMessage" xml:space="preserve">
+    <value>Category can not be parent category for itself</value>
+  </data>
   <data name="NegativeIndexExceptionMessage" xml:space="preserve">
     <value>Index can not be a negative number</value>
   </data>
