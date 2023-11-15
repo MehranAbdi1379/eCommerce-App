@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eCommerce.Domain.Exceptions
+namespace eCommerce.Domain.Exceptions.Category
 {
-    public class CategoryNotExistException: DomainException
+    public class CategoryNotExistException : DomainException
     {
         public override string Message => ExceptionMessages.CategoryNotExistExceptionMessage;
     }

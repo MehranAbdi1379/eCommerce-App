@@ -61,6 +61,15 @@ namespace eCommerce.Domain.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Category already has product and can&apos;t be a parent category.
+        /// </summary>
+        internal static string CategoryHasProductExceptionMessage {
+            get {
+                return ResourceManager.GetString("CategoryHasProductExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Title already exists in a neighboor category.
         /// </summary>
         internal static string CategoryNeighboorTitleExistsExceptionMessage {
@@ -88,11 +97,65 @@ namespace eCommerce.Domain.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Index can not be a negative number.
+        ///   Looks up a localized string similar to Can not add product to categories with sub category.
         /// </summary>
-        internal static string NegativeIndexExceptionMessage {
+        internal static string ProductCategoryWithSubCategoryExceptionMessage {
             get {
-                return ResourceManager.GetString("NegativeIndexExceptionMessage", resourceCulture);
+                return ResourceManager.GetString("ProductCategoryWithSubCategoryExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product description can&apos;t be shorter than 10 letters.
+        /// </summary>
+        internal static string ProductDescriptionShorterThanTenLettersExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductDescriptionShorterThanTenLettersExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product has to have at least one photo.
+        /// </summary>
+        internal static string ProductPhotoCountZeroExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductPhotoCountZeroExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product price can not be less than or equal to zero.
+        /// </summary>
+        internal static string ProductPriceNegativeOrZeroExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductPriceNegativeOrZeroExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product stock can&apos;t be a negative number.
+        /// </summary>
+        internal static string ProductStockNegativeExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductStockNegativeExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product title has to be unique.
+        /// </summary>
+        internal static string ProductTitleExistExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductTitleExistExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product title can&apos;t be shorter than 5 letters.
+        /// </summary>
+        internal static string ProductTitleShortenThanFiveLettersExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductTitleShortenThanFiveLettersExceptionMessage", resourceCulture);
             }
         }
     }

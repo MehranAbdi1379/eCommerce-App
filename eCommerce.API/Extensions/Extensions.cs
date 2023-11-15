@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Models;
+using eCommerce.Domain.Repositories;
 using eCommerce.Repository.Authentication;
 using eCommerce.Repository.Authentication.SeedData;
 using eCommerce.Repository.Main;

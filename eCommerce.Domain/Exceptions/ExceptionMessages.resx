@@ -117,6 +117,9 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="CategoryHasProductExceptionMessage" xml:space="preserve">
+    <value>Category already has product and can't be a parent category</value>
+  </data>
   <data name="CategoryNeighboorTitleExistsExceptionMessage" xml:space="preserve">
     <value>Title already exists in a neighboor category</value>
   </data>
@@ -126,7 +129,25 @@
   <data name="CategoryOwnParentCategoryExcpetionMessage" xml:space="preserve">
     <value>Category can not be parent category for itself</value>
   </data>
-  <data name="NegativeIndexExceptionMessage" xml:space="preserve">
-    <value>Index can not be a negative number</value>
+  <data name="ProductCategoryWithSubCategoryExceptionMessage" xml:space="preserve">
+    <value>Can not add product to categories with sub category</value>
+  </data>
+  <data name="ProductDescriptionShorterThanTenLettersExceptionMessage" xml:space="preserve">
+    <value>Product description can't be shorter than 10 letters</value>
+  </data>
+  <data name="ProductPhotoCountZeroExceptionMessage" xml:space="preserve">
+    <value>Product has to have at least one photo</value>
+  </data>
+  <data name="ProductPriceNegativeOrZeroExceptionMessage" xml:space="preserve">
+    <value>Product price can not be less than or equal to zero</value>
+  </data>
+  <data name="ProductStockNegativeExceptionMessage" xml:space="preserve">
+    <value>Product stock can't be a negative number</value>
+  </data>
+  <data name="ProductTitleExistExceptionMessage" xml:space="preserve">
+    <value>Product title has to be unique</value>
+  </data>
+  <data name="ProductTitleShortenThanFiveLettersExceptionMessage" xml:space="preserve">
+    <value>Product title can't be shorter than 5 letters</value>
   </data>
 </root>
