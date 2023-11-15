@@ -1,7 +1,7 @@
 ﻿using eCommerce.Domain.Models;
 using Framework.Repository;
 
-namespace eCommerce.Repository.Main
+namespace eCommerce.Domain.Repositories
 {
     public interface ICategoryRepository: IBaseRepository<Category>
     {
