@@ -51,7 +51,8 @@ namespace eCommerce.Repository.Main.SeedData
                         parentId = categories[index].Id;
                     } while (parentId == category.Id);
                     var categoryRepository = new CategoryRespository(context);
-                    category.SetParentCategoryId(parentId, categoryRepository);
+                    var productRepository = new ProductRepository(context);
+                    category.SetParentCategoryId(parentId, categoryRepository,productRepository);
                 }
             }
         }

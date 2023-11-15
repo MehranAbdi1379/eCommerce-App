@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Models;
+using eCommerce.Domain.Repositories;
 using eCommerce.Repository.Main;
 using eCommerce.Service.CategoryCQs.Queries;
 using MediatR;

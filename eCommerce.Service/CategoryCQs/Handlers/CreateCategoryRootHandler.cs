@@ -1,4 +1,5 @@
 ﻿using eCommerce.Domain.Models;
+using eCommerce.Domain.Repositories;
 using eCommerce.Repository.Main;
 using eCommerce.Service.CategoryCQs.Commands;
 using MediatR;
@@ -20,7 +21,7 @@ namespace eCommerce.Service.CategoryCQs.Handlers
 
         public Task<Category> Handle(CreateCategoryRootCommand request, CancellationToken cancellationToken)
         {
-            var category = new Category(request.dto.Title);
+            var category = new Category(request.dto.Title, categoryRepository);
             categoryRepository.Create(category);
             categoryRepository.Save();
             return Task.FromResult(category);

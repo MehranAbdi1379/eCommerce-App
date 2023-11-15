@@ -24,5 +24,6 @@ namespace eCommerce.Repository.Main.DataBase
         }
 
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Product> Products { get; set; }
     }
 }
