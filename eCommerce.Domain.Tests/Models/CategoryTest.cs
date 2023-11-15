@@ -1,10 +1,11 @@
-﻿using eCommerce.Domain.Exceptions;
+﻿using eCommerce.Domain.Exceptions.Category;
 using eCommerce.Domain.Models;
-using eCommerce.Repository.Main;
+using eCommerce.Domain.Repositories;
 using Moq;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,81 +14,90 @@ namespace eCommerce.Domain.Tests.Models
     [TestClass]
     public class CategoryTest
     {
-        private Mock<ICategoryRepository> mockRepository;
-
-        [TestInitialize]
-        public void Initialize()
+        private Mock<ICategoryRepository> categoryRepository = new Mock<ICategoryRepository>();
+        private Mock<IProductRepository> productRepository = new Mock<IProductRepository>();
+        public CategoryTest()
         {
-            mockRepository = new Mock<ICategoryRepository>();
+            categoryRepository.Setup(repo => repo.IsExist(It.IsAny<Guid>())).Returns(true);
+            categoryRepository.Setup(repo => repo.GetNeighboorCategories(It.IsAny<Guid>())).Returns(new List<Category>());
+            categoryRepository.Setup(repo => repo.GetRootCategories()).Returns(new List<Category>());
+
+            productRepository.Setup(repo => repo.CategoryHasAnyProduct(It.IsAny<Guid>())).Returns(false);
         }
 
         [TestMethod]
-        public void Constructor_WithTitle_SetsTitle()
+        public void Properties_Retrieve()
         {
-            string title = "TestCategory";
-            var category = new Category(title);
-            Assert.AreEqual(title, category.Title);
-        }
-
-        [TestMethod]
-        public void SetParentCategoryId_ValidParentId_SetsParentCategoryIdAndIndex()
-        {
-            Guid parentCategoryId = Guid.NewGuid();
-            mockRepository.Setup(repo => repo.IsExist(parentCategoryId)).Returns(true);
-            mockRepository.Setup(repo => repo.GetById(parentCategoryId)).Returns(new Category("ParentCategory"));
-            mockRepository.Setup(x => x.GetNeighboorCategories(It.IsAny<Guid>())).Returns(new List<Category> { new Category("newTitle") });
-            var category = new Category();
-            category.SetParentCategoryId(parentCategoryId, mockRepository.Object);
+            var category = CreateValidCategory();
+            var parentCategoryId = Guid.NewGuid();
+            category.SetParentCategoryId(parentCategoryId, categoryRepository.Object,productRepository.Object);
+            Assert.IsNotNull(category);
+            Assert.AreEqual("Title", category.Title);
             Assert.AreEqual(parentCategoryId, category.ParentCategoryId);
         }
 
         [TestMethod]
-        public void SetParentCategoryId_InvalidParentId_ThrowsCategoryNotExistException()
+        public void SetTitle_TitleNotValid_ThrowException()
         {
-            Guid invalidParentCategoryId = Guid.NewGuid();
-            mockRepository.Setup(repo => repo.IsExist(invalidParentCategoryId)).Returns(false);
-            var category = new Category();
-            Assert.ThrowsException<CategoryNotExistException>(() => category.SetParentCategoryId(invalidParentCategoryId, mockRepository.Object));
+            var category = CreateValidCategory();
+            Assert.ThrowsException<ArgumentNullException>(() => category.SetTitle("", categoryRepository.Object));
         }
 
         [TestMethod]
-        [DataRow(null)]
-        [DataRow("")]
-        public void SetTitle_InvalidTitle_ThrowsArgumentNullException(string invalidTitle)
+        public void SetTitle_TitleNeighboorExist_ThrowException()
         {
-            var category = new Category();
-            Assert.ThrowsException<ArgumentNullException>(() => category.SetTitle(invalidTitle));
+            var category = CreateValidCategory();
+            List<Category> categories = new List<Category> { new Category("Title", categoryRepository.Object) };
+            categoryRepository.Setup(repo => repo.GetRootCategories()).Returns(categories);
+            Assert.ThrowsException<CategoryNeighboorTitleExistsException>(() => category.SetTitle("Title", categoryRepository.Object));
         }
 
         [TestMethod]
-        public void SetTitle_ValidTitle_SetsTitle()
+        public void SetParentCategoryId_OwnId_ThrowException()
         {
-            var category = new Category();
-            string validTitle = "NewTitle";
-            category.SetTitle(validTitle);
-            Assert.AreEqual(validTitle, category.Title);
+            var category = CreateValidCategory();
+            Assert.ThrowsException<CategoryOwnParentCategoryExcpetion>(() => category.SetParentCategoryId(category.Id, categoryRepository.Object,productRepository.Object));
         }
 
         [TestMethod]
-        public void GetTitle_ReturnsTitle()
+        public void SetParentCategoryId_NeighboorTitleExist_ThrowException()
         {
-            string title = "TestCategory";
-            var category = new Category(title);
-            string retrievedTitle = category.Title;
-            Assert.AreEqual(title, retrievedTitle);
+            var category = CreateValidCategory();
+            List<Category> categories = new List<Category> { new Category("Title", categoryRepository.Object) };
+            categoryRepository.Setup(repo => repo.GetNeighboorCategories(It.IsAny<Guid>())).Returns(categories);
+            Assert.ThrowsException<CategoryNeighboorTitleExistsException>(() => category.SetParentCategoryId(Guid.NewGuid(), categoryRepository.Object, productRepository.Object));
         }
 
         [TestMethod]
-        public void GetParentCategoryId_ReturnsParentCategoryId()
+        public void SetParentCategoryId_NotExist_throwException()
         {
-            Guid parentCategoryId = Guid.NewGuid();
-            mockRepository.Setup(repo => repo.IsExist(parentCategoryId)).Returns(true);
-            mockRepository.Setup(repo => repo.GetById(parentCategoryId)).Returns(new Category("ParentCategory"));
-            mockRepository.Setup(x => x.GetNeighboorCategories(It.IsAny<Guid>())).Returns(new List<Category> { new Category("newTitle") });
-            var category = new Category();
-            category.SetParentCategoryId(parentCategoryId, mockRepository.Object);
-            Guid? retrievedParentCategoryId = category.ParentCategoryId;
-            Assert.AreEqual(parentCategoryId, retrievedParentCategoryId);
+            var category = CreateValidCategory();
+            categoryRepository.Setup(repo => repo.IsExist(It.IsAny<Guid>())).Returns(false);
+            Assert.ThrowsException<CategoryNotExistException>(() => category.SetParentCategoryId(Guid.NewGuid(), categoryRepository.Object, productRepository.Object));
+        }
+
+        [TestMethod]
+        public void SetParentCategoryId_AlreadyHasProduct_ThrowException()
+        {
+            var category = CreateValidCategory();
+            productRepository.Setup(repo => repo.CategoryHasAnyProduct(It.IsAny<Guid>())).Returns(true);
+            Assert.ThrowsException<CategoryHasProductException>(() => category.SetParentCategoryId(Guid.NewGuid(), categoryRepository.Object, productRepository.Object));
+        }
+
+        [TestMethod]
+        public void RemoveParentCategoryId_TitleExist_ThrowException()
+        {
+            var category = CreateValidCategory();
+            category.SetParentCategoryId(Guid.NewGuid(),categoryRepository.Object, productRepository.Object);
+            List<Category> categories = new List<Category> { new Category("Title", categoryRepository.Object) };
+            categoryRepository.Setup(repo => repo.GetRootCategories()).Returns(categories);
+            Assert.ThrowsException<CategoryNeighboorTitleExistsException>(() => category.RemoveParentCategoryId(categoryRepository.Object));
+        }
+
+
+        private Category CreateValidCategory()
+        {
+            return new Category("Title", categoryRepository.Object);
         }
     }
 }
