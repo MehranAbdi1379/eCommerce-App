@@ -1,5 +1,6 @@
 ﻿using eCommerce.Domain.Exceptions;
-using eCommerce.Repository.Main;
+using eCommerce.Domain.Exceptions.Category;
+using eCommerce.Domain.Repositories;
 using Framework.Core.Domain;
 using System;
 using System.Collections.Generic;
@@ -21,11 +22,12 @@ namespace eCommerce.Domain.Models
 
         public Category() { }
 
-        public void SetParentCategoryId(Guid parentCategoryId, ICategoryRepository categoryRepository)
+        public void SetParentCategoryId(Guid parentCategoryId, ICategoryRepository categoryRepository, IProductRepository productRepository)
         {
             CheckParentCategoryExist();
-            CheckNeighboorCategoryTitle(categoryRepository, parentCategoryId);
+            CheckNeighboorCategoryTitle();
             CheckOwnParentCategory();
+            CheckCategoryHasAnyProduct();
             ParentCategoryId = parentCategoryId;
 
             void CheckParentCategoryExist()
@@ -38,12 +40,36 @@ namespace eCommerce.Domain.Models
                 if (parentCategoryId == this.Id)
                     throw new CategoryOwnParentCategoryExcpetion();
             }
+            void CheckNeighboorCategoryTitle()
+            {
+                var neightBoorCategories = categoryRepository.GetNeighboorCategories(parentCategoryId);
+                foreach (var category in neightBoorCategories)
+                {
+                    if (category.Title == this.Title && this.Id != category.Id)
+                        throw new CategoryNeighboorTitleExistsException();
+                }
+            }
+            void CheckCategoryHasAnyProduct()
+            {
+                if (productRepository.CategoryHasAnyProduct(parentCategoryId))
+                    throw new CategoryHasProductException();
+            }
         }
 
         public void RemoveParentCategoryId(ICategoryRepository categoryRepository)
         {
-            CheckRootCategoryTitle(categoryRepository);
+            CheckRootCategoryTitle();
             ParentCategoryId = null;
+
+            void CheckRootCategoryTitle()
+            {
+                var rootCategories = categoryRepository.GetRootCategories();
+                foreach (var category in rootCategories)
+                {
+                    if (category.Title == this.Title && this.Id != category.Id)
+                        throw new CategoryNeighboorTitleExistsException();
+                }
+            }
         }
 
         public void SetTitle(string title, ICategoryRepository categoryRepository)
@@ -61,34 +87,31 @@ namespace eCommerce.Domain.Models
             {
                 if (ParentCategoryId == null)
                 {
-                    CheckRootCategoryTitle(categoryRepository);
+                    CheckRootTitle();
                 }
                 else
                 {
-                    CheckNeighboorCategoryTitle(categoryRepository, (Guid)ParentCategoryId);
+                    CheckNeighboorTitle();
                 }
-            }
-        }
 
-
-        private void CheckRootCategoryTitle(ICategoryRepository categoryRepository)
-        {
-            var rootCategories = categoryRepository.GetRootCategories();
-            rootCategories.Remove(this);
-            foreach (var category in rootCategories)
-            {
-                if (category.Title == this.Title)
-                    throw new CategoryNeighboorTitleExistsException();
-            }
-        }
-        private void CheckNeighboorCategoryTitle(ICategoryRepository categoryRepository, Guid parentCategoryId)
-        {
-            var neightBoorCategories = categoryRepository.GetNeighboorCategories(parentCategoryId);
-            neightBoorCategories.Remove(this);
-            foreach (var category in neightBoorCategories)
-            {
-                if (category.Title == this.Title)
-                    throw new CategoryNeighboorTitleExistsException();
+                void CheckRootTitle()
+                {
+                    var rootCategories = categoryRepository.GetRootCategories();
+                    foreach (var category in rootCategories)
+                    {
+                        if (category.Title == title && this.Id != category.Id)
+                            throw new CategoryNeighboorTitleExistsException();
+                    }
+                }
+                void CheckNeighboorTitle()
+                {
+                    var neightBoorCategories = categoryRepository.GetNeighboorCategories((Guid)ParentCategoryId);
+                    foreach (var category in neightBoorCategories)
+                    {
+                        if (category.Title == title && this.Id != category.Id)
+                            throw new CategoryNeighboorTitleExistsException();
+                    }
+                }
             }
         }
     }
