@@ -4,19 +4,14 @@ using eCommerce.Domain.Exceptions.Product;
 using eCommerce.Domain.Models;
 using eCommerce.Domain.Repositories;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eCommerce.Domain.Tests.Models
 {
     [TestClass]
     public class ProductTest
     {
-        private Mock<ICategoryRepository> categoryRepository = new Mock<ICategoryRepository>();
-        private Mock<IProductRepository> productRepository = new Mock<IProductRepository>();
+        private readonly Mock<ICategoryRepository> categoryRepository = new();
+        private readonly Mock<IProductRepository> productRepository = new();
 
         public ProductTest()
         {
@@ -30,7 +25,7 @@ namespace eCommerce.Domain.Tests.Models
         {
             var title = "Valid Title";
             var description = "Valid Description";
-            var photoURLs = new List<string> { "url1", "url2" };
+            var photoURLs = new List<Guid> { Guid.NewGuid(), Guid.NewGuid() };
             var price = 15.6m;
             var categoryId = Guid.NewGuid();
             var stock = 5;
@@ -45,7 +40,7 @@ namespace eCommerce.Domain.Tests.Models
             Assert.IsNotNull(product);
             Assert.AreEqual(title, product.Title);
             Assert.AreEqual(description, product.Description);
-            CollectionAssert.AreEqual(photoURLs, product.PhotoURLs);
+            CollectionAssert.AreEqual(photoURLs, product.ProductPhotoIds);
             Assert.AreEqual(price, product.Price);
             Assert.AreEqual(categoryId, product.CategoryId);
             Assert.AreEqual(stock, product.Stock);
@@ -62,7 +57,7 @@ namespace eCommerce.Domain.Tests.Models
         public void SetPhotoURLs_EmptyPhotoURLs_ThrowsProductPhotoCountZeroException()
         {
             var product = CreateValidProduct();
-            Assert.ThrowsException<ProductPhotoCountZeroException>(() => product.SetPhotoUrls(new List<string>()));
+            Assert.ThrowsException<ProductPhotoCountZeroException>(() => product.SetPhotoUrls(new List<Guid>()));
         }
 
         [TestMethod]
@@ -114,7 +109,7 @@ namespace eCommerce.Domain.Tests.Models
         {
             var title = "Valid Title";
             var description = "Valid Description";
-            var photoURLs = new List<string> { "url1", "url2" };
+            var photoURLs = new List<Guid> { Guid.NewGuid() , Guid.NewGuid()};
             var price = 10.99m;
             var categoryId = Guid.NewGuid();
             var stock = 54;

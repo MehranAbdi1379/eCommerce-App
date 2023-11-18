@@ -2,20 +2,14 @@
 using eCommerce.Domain.Models;
 using eCommerce.Domain.Repositories;
 using Moq;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace eCommerce.Domain.Tests.Models
 {
     [TestClass]
     public class CategoryTest
     {
-        private Mock<ICategoryRepository> categoryRepository = new Mock<ICategoryRepository>();
-        private Mock<IProductRepository> productRepository = new Mock<IProductRepository>();
+        private readonly Mock<ICategoryRepository> categoryRepository = new();
+        private readonly Mock<IProductRepository> productRepository = new();
         public CategoryTest()
         {
             categoryRepository.Setup(repo => repo.IsExist(It.IsAny<Guid>())).Returns(true);
@@ -44,10 +38,10 @@ namespace eCommerce.Domain.Tests.Models
         }
 
         [TestMethod]
-        public void SetTitle_TitleNeighboorExist_ThrowException()
+        public void SetTitle_TitleNeighborExist_ThrowException()
         {
             var category = CreateValidCategory();
-            List<Category> categories = new List<Category> { new Category("Title", categoryRepository.Object) };
+            List<Category> categories = new List<Category> { new("Title", categoryRepository.Object) };
             categoryRepository.Setup(repo => repo.GetRootCategories()).Returns(categories);
             Assert.ThrowsException<CategoryNeighboorTitleExistsException>(() => category.SetTitle("Title", categoryRepository.Object));
         }
@@ -60,10 +54,10 @@ namespace eCommerce.Domain.Tests.Models
         }
 
         [TestMethod]
-        public void SetParentCategoryId_NeighboorTitleExist_ThrowException()
+        public void SetParentCategoryId_NeighborTitleExist_ThrowException()
         {
             var category = CreateValidCategory();
-            List<Category> categories = new List<Category> { new Category("Title", categoryRepository.Object) };
+            List<Category> categories = new List<Category> { new("Title", categoryRepository.Object) };
             categoryRepository.Setup(repo => repo.GetNeighboorCategories(It.IsAny<Guid>())).Returns(categories);
             Assert.ThrowsException<CategoryNeighboorTitleExistsException>(() => category.SetParentCategoryId(Guid.NewGuid(), categoryRepository.Object, productRepository.Object));
         }
@@ -89,7 +83,7 @@ namespace eCommerce.Domain.Tests.Models
         {
             var category = CreateValidCategory();
             category.SetParentCategoryId(Guid.NewGuid(),categoryRepository.Object, productRepository.Object);
-            List<Category> categories = new List<Category> { new Category("Title", categoryRepository.Object) };
+            List<Category> categories = new List<Category> { new("Title", categoryRepository.Object) };
             categoryRepository.Setup(repo => repo.GetRootCategories()).Returns(categories);
             Assert.ThrowsException<CategoryNeighboorTitleExistsException>(() => category.RemoveParentCategoryId(categoryRepository.Object));
         }
