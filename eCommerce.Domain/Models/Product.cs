@@ -18,11 +18,11 @@ namespace eCommerce.Domain.Models
         public decimal Price { get; private set; }
         public int Stock { get; private set; } = 0;
         public string Description { get; private set; }
-        public List<string> PhotoURLs { get; private set; }
+        public List<Guid> ProductPhotoIds { get; private set; }
 
         public Product(string title, 
             string description, 
-            List<string> photoURLs, 
+            List<Guid> productPhotoIds, 
             decimal price, 
             int stock,
             Guid categoryId
@@ -31,7 +31,7 @@ namespace eCommerce.Domain.Models
         {
             SetTitle(title,repository);
             SetDescription(description);
-            SetPhotoUrls(photoURLs);
+            SetPhotoUrls(productPhotoIds);
             SetPrice(price);
             SetCategoryId(categoryId, categoryRepository);
             SetStock(stock);
@@ -53,11 +53,11 @@ namespace eCommerce.Domain.Models
             Price = price;
         }
 
-        public void SetPhotoUrls(List<string> photoURLs)
+        public void SetPhotoUrls(List<Guid> productPhotoIds)
         {
-            if (photoURLs.Count == 0)
+            if (productPhotoIds.Count == 0)
                 throw new ProductPhotoCountZeroException();
-            PhotoURLs = photoURLs;
+            ProductPhotoIds = productPhotoIds;
         }
 
         public void SetDescription(string description)
