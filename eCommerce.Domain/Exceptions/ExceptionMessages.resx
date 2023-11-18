@@ -129,11 +129,17 @@
   <data name="CategoryOwnParentCategoryExcpetionMessage" xml:space="preserve">
     <value>Category can not be parent category for itself</value>
   </data>
+  <data name="PhotoFormatExceptionMessage" xml:space="preserve">
+    <value>Photo should be only in JPG format</value>
+  </data>
   <data name="ProductCategoryWithSubCategoryExceptionMessage" xml:space="preserve">
     <value>Can not add product to categories with sub category</value>
   </data>
   <data name="ProductDescriptionShorterThanTenLettersExceptionMessage" xml:space="preserve">
     <value>Product description can't be shorter than 10 letters</value>
+  </data>
+  <data name="ProductNotExistExceptionMessage" xml:space="preserve">
+    <value>Product does not exist</value>
   </data>
   <data name="ProductPhotoCountZeroExceptionMessage" xml:space="preserve">
     <value>Product has to have at least one photo</value>

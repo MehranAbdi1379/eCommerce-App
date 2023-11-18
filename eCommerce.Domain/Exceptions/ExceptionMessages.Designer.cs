@@ -97,6 +97,15 @@ namespace eCommerce.Domain.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Photo should be only in JPG format.
+        /// </summary>
+        internal static string PhotoFormatExceptionMessage {
+            get {
+                return ResourceManager.GetString("PhotoFormatExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Can not add product to categories with sub category.
         /// </summary>
         internal static string ProductCategoryWithSubCategoryExceptionMessage {
@@ -111,6 +120,15 @@ namespace eCommerce.Domain.Exceptions {
         internal static string ProductDescriptionShorterThanTenLettersExceptionMessage {
             get {
                 return ResourceManager.GetString("ProductDescriptionShorterThanTenLettersExceptionMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Product does not exist.
+        /// </summary>
+        internal static string ProductNotExistExceptionMessage {
+            get {
+                return ResourceManager.GetString("ProductNotExistExceptionMessage", resourceCulture);
             }
         }
         
